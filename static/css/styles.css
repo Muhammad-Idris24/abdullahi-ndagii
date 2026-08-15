@@ -666,6 +666,71 @@ address { font-style: normal; }
 }
 
 /* Project index list */
+
+/* ---------- Responsive / Accessibility fixes ---------- */
+
+/* Prevent long words or unbroken content from overflowing */
+html { -webkit-text-size-adjust: 100%; }
+* { word-break: break-word; }
+
+/* Ensure headings and anchors are not covered by sticky header */
+h1, h2, h3, .page-title, .artwork-title { scroll-margin-top: 96px; }
+@media (max-width: 640px) { h1, h2, h3, .page-title, .artwork-title { scroll-margin-top: 84px; } }
+
+/* Small screen layout adjustments */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-name { font-size: clamp(28px, 9vw, 56px); }
+  .hero-line-italic { padding-left: 0; }
+  .hero-artwork img { aspect-ratio: auto; max-height: 56vh; object-fit: contain; }
+
+  .intro-inner { padding: 20px; }
+  .header-inner { min-height: 64px; }
+
+  /* Mobile nav: show toggle and make nav overlay */
+  .nav-toggle { display: inline-flex; }
+  .primary-nav { position: fixed; inset: 64px 12px auto auto; background: var(--warm-white); padding: 18px; border: 1px solid var(--border-light); border-radius: 6px; display: none; z-index: 10001; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+  .primary-nav.is-open { display: block; }
+  .primary-nav ul { flex-direction: column; gap: 12px; }
+}
+
+/* Very small screens */
+@media (max-width: 600px) {
+  .works-grid, .works-grid--index { grid-template-columns: 1fr; }
+  .work-card { grid-column: span 12; }
+  .project-card-link { grid-template-columns: 1fr; }
+  .project-card-media { order: 0; }
+  .section { padding: clamp(36px, 8vw, 56px) 0; }
+
+  .artwork-title { font-size: clamp(20px, 7vw, 30px); }
+  .artwork-meta-grid { grid-template-columns: 1fr; gap: 12px 12px; }
+  .artwork-primary-img { max-height: 60vh; object-fit: contain; }
+  .hero-name { line-height: 1; }
+}
+
+/* Tablet / mid screens */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .hero-grid { grid-template-columns: 1fr 1.05fr; }
+  .hero-name { font-size: clamp(40px, 8vw, 90px); }
+}
+
+/* Ensure content doesn't overlap with sticky header when focusing elements */
+:focus { outline-offset: 4px; }
+
+/* Ensure large SVG intro mark scales nicely on small viewports */
+.intro-mark { max-width: 220px; }
+
+/* Reduce oversized image bleed on very large screens */
+@media (min-width: 1600px) {
+  .hero-name { max-width: 88ch; }
+}
+
+/* Ensure footer nav wraps gracefully */
+.footer-nav li { white-space: nowrap; }
+
+/* End responsive fixes */
+
+
 .project-index-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

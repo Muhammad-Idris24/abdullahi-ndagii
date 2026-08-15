@@ -139,10 +139,20 @@
 
   // ----- Boot -----
   function boot() {
+    // Disable automatic scroll restoration so pages always start at top when navigated to
+    try {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    } catch (e) {}
+
     initIntro();
     initNav();
     initHeaderScroll();
     try { initReveal(); } catch (e) {}
+
+    // Ensure page starts at top on load unless navigating to a hash anchor
+    try {
+      if (!location.hash) window.scrollTo({ top: 0 });
+    } catch (e) {}
   }
 
   if (doc.readyState === 'loading') {
