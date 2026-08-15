@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ project.title }} — {{ artist.full_name }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A3; margin: 22mm 20mm 22mm 20mm; }
+  * { box-sizing: border-box; }
+  html { font-size: 10.5pt; }
+  body { margin: 0; font-family: 'Inter', system-ui, sans-serif; color: #1a1917; background: #fff; line-height: 1.6; }
+  h1,h2,h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+  h1 { font-size: 48pt; line-height: 1; margin: 0; }
+  h2 { font-size: 20pt; border-bottom: 0.4pt solid #d9d3cb; padding-bottom: 6pt; margin: 0 0 10pt; page-break-after: avoid; }
+  h3 { font-size: 14pt; margin: 0; }
+  .eyebrow { font-size: 9pt; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8580; margin: 0 0 6pt; }
+  .muted { color: #6e6964; }
+  .cover { min-height: 230mm; display: flex; flex-direction: column; justify-content: space-between; padding: 20mm 0 0; page-break-after: always; }
+  .cover .proj-kicker { font-family: 'Cormorant Garamond', serif; font-size: 14pt; color: #4a4643; margin: 0 0 14pt; }
+  .cover .proj-title { font-family: 'Cormorant Garamond', serif; font-size: 56pt; line-height: 0.98; margin: 0 0 10pt; }
+  .cover .proj-sub { font-family: 'Cormorant Garamond', serif; font-size: 17pt; color: #4a4643; font-style: italic; }
+  .cover-foot { display: flex; justify-content: space-between; font-size: 9pt; color: #8a8580; border-top: 0.4pt solid #d9d3cb; padding-top: 8pt; }
+  .section { page-break-before: always; padding-top: 2mm; }
+  .prose { font-size: 11pt; line-height: 1.75; max-width: 165mm; }
+  .prose p { margin: 0 0 10pt; }
+  .quote { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14pt; line-height: 1.55; padding-left: 14pt; border-left: 0.8pt solid #1a1917; margin: 6pt 0 12pt; }
+  .artwork { page-break-before: always; }
+  .artwork-img { width: 100%; max-height: 200mm; display: flex; align-items: center; justify-content: center; margin: 0 0 10mm; page-break-inside: avoid; }
+  .artwork-img img { max-width: 100%; max-height: 200mm; object-fit: contain; }
+  .artwork-cap { border-top: 0.4pt solid #d9d3cb; padding-top: 6pt; font-size: 10pt; }
+  .artwork-cap .t { font-family: 'Cormorant Garamond', serif; font-size: 20pt; margin: 0 0 2pt; }
+  .artwork-cap .m { font-size: 9.5pt; color: #4a4643; }
+  .artwork-cap .d { margin-top: 6pt; line-height: 1.6; }
+  .rule { border-top: 0.4pt solid #d9d3cb; margin: 10mm 0; }
+  .featured-img { width: 100%; max-height: 180mm; display: flex; align-items: center; justify-content: center; margin: 10mm 0; page-break-inside: avoid; }
+  .featured-img img { max-width: 100%; max-height: 180mm; }
+  .page-foot { position: fixed; bottom: 10mm; left: 0; right: 0; font-size: 8pt; color: #8a8580; display: flex; justify-content: space-between; border-top: 0.3pt solid #e7e1d9; padding-top: 3mm; }
+</style>
+</head>
+<body>
+
+  <section class="cover">
+    <div>
+      <div class="eyebrow">Project · {{ project.year }}</div>
+      <p class="proj-kicker">{{ artist.full_name }}</p>
+      <h1 class="proj-title">{{ project.title }}</h1>
+      {% if project.subtitle %}<p class="proj-sub">{{ project.subtitle }}</p>{% endif %}
+      <div class="rule"></div>
+      <div class="prose">{{ project.summary }}</div>
+      {% if project.featured_image %}
+        <div class="featured-img">
+          <img src="{{ (ROOT.as_uri() + '/' + project.featured_image) if project.featured_image.startswith('images/') else project.featured_image }}" alt="{{ project.title }}">
+        </div>
+      {% endif %}
+    </div>
+    <div class="cover-foot">
+      <span>{{ artist.full_name }} · {{ project.title }}</span>
+      <span>© {{ current_year }}</span>
+    </div>
+  </section>
+
+  {% if project.project_statement %}
+    <section class="section">
+      <div class="eyebrow">Project Statement</div>
+      <h2>Statement</h2>
+      <div class="prose">{{ project.project_statement | nl2br | safe }}</div>
+    </section>
+  {% endif %}
+
+  {% if project.cultural_context %}
+    <section class="section section-no-break">
+      <div class="eyebrow">Cultural &amp; Contextual Background</div>
+      <h2>Context</h2>
+      <div class="prose">{{ project.cultural_context | nl2br | safe }}</div>
+    </section>
+  {% endif %}
+
+  {% if project.artist_statement %}
+    <section class="section section-no-break">
+      <div class="eyebrow">Artist on this work</div>
+      <h2>Artist Statement</h2>
+      <div class="quote">{{ project.artist_statement | nl2br | safe }}</div>
+    </section>
+  {% endif %}
+
+  {% if project.project_images %}
+    <section class="section">
+      <div class="eyebrow">Project Images</div>
+      <h2>Images</h2>
+      {% for img in project.project_images %}
+        <figure style="page-break-inside: avoid; margin: 0 0 12mm;">
+          <img src="{{ (ROOT.as_uri() + '/' + (img.src if img.src is defined else img)) }}" style="max-width:100%; max-height: 190mm;" alt="">
+          {% if img.caption is defined %}<figcaption class="muted" style="margin-top: 4pt; font-size: 9.5pt;">{{ img.caption }}</figcaption>{% endif %}
+        </figure>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if project.artworks_objects %}
+    {% for art in project.artworks_objects %}
+      <section class="artwork">
+        <div class="artwork-img">
+          <img src="{{ (ROOT.as_uri() + '/' + art.image) if art.image.startswith('images/') else art.image }}" alt="{{ art.title }}">
+        </div>
+        <div class="artwork-cap">
+          <div class="t">{{ art.title }}</div>
+          <div class="m">{{ art.year }} · {{ art.medium }} · {{ art.dimensions }}{% if art.series %} · {{ art.series }}{% endif %}</div>
+          {% if art.description %}<div class="d">{{ art.description }}</div>{% endif %}
+        </div>
+      </section>
+    {% endfor %}
+  {% endif %}
+
+  <div class="page-foot">
+    <span>{{ artist.full_name }} — {{ project.title }}</span>
+    <span>© {{ current_year }}</span>
+  </div>
+
+</body>
+</html>

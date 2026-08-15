@@ -1,0 +1,26 @@
+{
+  "site_title": "Abdullahi Ndagi Adamu — Visual Artist",
+  "site_description": "Abdullahi Ndagi Adamu is a Nigerian visual artist exploring memory, cultural identity, and Kupa / Nupe heritage through painting and mixed media.",
+  "base_url": "",
+  "default_share_image": "images/artworks/timeless.jpeg",
+  "language": "en",
+  "theme": {
+    "primary": "#1a1917",
+    "bone": "#f4efe8",
+    "ash": "#8a8580",
+    "warm_white": "#faf8f5",
+    "border": "#d9d3cb"
+  },
+  "navigation": [
+    {"label": "Work", "path": "work.html"},
+    {"label": "Projects", "path": "projects.html"},
+    {"label": "About", "path": "about.html"},
+    {"label": "Exhibitions", "path": "exhibitions.html"},
+    {"label": "CV", "path": "cv.html"},
+    {"label": "Contact", "path": "contact.html"}
+  ],
+  "footer_downloads": [
+    {"label": "Artist Portfolio PDF", "path": "pdfs/abdullahi-ndagi-adamu-portfolio.pdf"},
+    {"label": "Artist CV PDF", "path": "pdfs/abdullahi-ndagi-adamu-cv.pdf"}
+  ]
+}

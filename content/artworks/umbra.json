@@ -1,0 +1,18 @@
+{
+  "slug": "umbra",
+  "title": "Umbra",
+  "year": 2025,
+  "medium": "Acrylic on Canvas",
+  "dimensions": "24 x 36 inches",
+  "dimensions_cm": "61 x 91 cm",
+  "series": "Witness Series",
+  "project": "",
+  "image": "images/artworks/umbra.jpeg",
+  "thumbnail": "images/artworks/umbra.jpeg",
+  "description": "The shadow doesn't shrink when you ignore it. It waits. It grows. And if you keep looking away, one day it explodes. This piece is me turning around — acknowledging the dark in me, embracing it, learning to live it instead of shaming it. I didn't paint the shadow to defeat it. I painted it to look it in the eye.",
+  "artist_note": "",
+  "featured": true,
+  "order": 5,
+  "published": true,
+  "tags": ["shadow", "umbra", "darkness", "self", "introspection"]
+}

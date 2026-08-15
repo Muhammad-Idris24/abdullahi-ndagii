@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-hero page-hero--exhibitions">
+  <div class="container">
+    <div class="page-hero-grid">
+      <div>
+        <div class="section-eyebrow">Exhibitions &amp; Presentations</div>
+        <h1 class="page-title">Exhibitions</h1>
+        <p class="page-lede">Group shows, anthologies, and public presentations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-exhibitions-list">
+  <div class="container">
+    {% if exhibitions %}
+      <ul class="exhibition-list">
+        {% for exh in exhibitions %}
+          <li class="exhibition-item exhibition-item--full">
+            <span class="exhibition-year">{{ exh.year }}</span>
+            <div class="exhibition-body">
+              <div class="exhibition-title">{{ exh.title }}</div>
+              {% if exh.presenting_organization %}<div class="exhibition-org">{{ exh.presenting_organization }}</div>{% endif %}
+              <div class="exhibition-meta">
+                {% if exh.type %}{{ exh.type }} · {% endif %}
+                {{ exh.city }}, {{ exh.country }} · {{ exh.role }}
+              </div>
+              {% if exh.description %}<p class="exhibition-desc">{{ exh.description }}</p>{% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">Exhibitions will be listed here as they are added.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

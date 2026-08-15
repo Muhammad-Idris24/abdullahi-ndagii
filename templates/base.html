@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="{{ site.language | default('en') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description }}">
+  <meta name="author" content="{{ artist.full_name }}">
+
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_description }}">
+  <meta property="og:type" content="website">
+  {% if site.base_url %}
+    <meta property="og:url" content="{{ site.base_url }}/{{ page_path }}">
+    <link rel="canonical" href="{{ site.base_url }}/{{ page_path }}">
+  {% endif %}
+  <meta property="og:image" content="{{ site.default_share_image }}">
+  <meta property="og:locale" content="en_NG">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title }}">
+  <meta name="twitter:description" content="{{ page_description }}">
+  <meta name="twitter:image" content="{{ site.default_share_image }}">
+
+  <meta name="theme-color" content="#1a1917">
+  <meta name="color-scheme" content="light">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/styles.css">
+  <link rel="icon" href="{% if page_path.count('/') > 1 %}../{% endif %}favicon.ico" sizes="any">
+
+  <noscript>
+    <style>
+      #intro-overlay { display: none !important; }
+      body { opacity: 1 !important; }
+    </style>
+  </noscript>
+</head>
+<body class="{{ body_class | default('') }}" data-page="{{ active | default('') }}" {% if intro %}data-intro="1"{% endif %}>
+
+  {% if not hide_intro %}
+  <div id="intro-overlay" aria-hidden="true">
+    <div class="intro-inner">
+      <svg class="intro-mark" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="94" class="intro-ring" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="70" class="intro-ring" fill="none" stroke="currentColor" stroke-width="0.3"/>
+        <path d="M100 20 L100 180 M20 100 L180 100" class="intro-cross" stroke="currentColor" stroke-width="0.4"/>
+        <circle cx="100" cy="100" r="3" class="intro-dot" fill="currentColor"/>
+      </svg>
+      <div class="intro-name">
+        <span class="intro-line">{{ artist.full_name | upper }}</span>
+        <span class="intro-sub">{{ artist.professional_title }}</span>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="{% if page_path.count('/') > 1 %}../{% endif %}index.html" aria-label="{{ artist.full_name }} — home">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+        </span>
+        <span class="brand-name">{{ artist.full_name }}</span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <ul>
+          {% for item in site.navigation %}
+            <li>
+              {% set is_active = active == item.path.replace('.html', '') %}
+              <a href="{% if page_path.count('/') > 1 %}../{% endif %}{{ item.path }}"
+                 class="{% if is_active %}is-active{% endif %}"
+                 {% if is_active %}aria-current="page"{% endif %}>
+                {{ item.label }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" role="main" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-name">{{ artist.full_name }}</div>
+        <div class="footer-title">{{ artist.professional_title }} · {{ artist.location }}</div>
+      </div>
+      <nav aria-label="Footer">
+        <ul class="footer-nav">
+          {% for item in site.navigation %}
+            <li><a href="{% if page_path.count('/') > 1 %}../{% endif %}{{ item.path }}">{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+      <div class="footer-contact">
+        {% if artist.contact.email %}
+          <a href="mailto:{{ artist.contact.email }}">{{ artist.contact.email }}</a>
+        {% endif %}
+        {% if artist.social_links %}
+          <ul class="social-list" aria-label="Social links">
+            {% for s in artist.social_links %}
+              <li><a href="{{ s.url }}" rel="noopener noreferrer" target="_blank">{{ s.label }}{% if s.handle %} · {{ s.handle }}{% endif %}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="footer-downloads">
+        <div class="footer-label">Downloads</div>
+        <ul>
+          {% for dl in site.footer_downloads %}
+            <li><a href="{% if page_path.count('/') > 1 %}../{% endif %}{{ dl.path }}">{{ dl.label }} ↓</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <div class="container legal-row">
+        <span>© {{ current_year }} {{ artist.full_name }}. All works and images are copyrighted.</span>
+        <span>Built with care · Published from Nigeria.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="static/js/main.js" defer></script>
+</body>
+</html>

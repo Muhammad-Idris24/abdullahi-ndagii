@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-hero page-hero--projects">
+  <div class="container">
+    <div class="page-hero-grid">
+      <div>
+        <div class="section-eyebrow">Bodies of Work</div>
+        <h1 class="page-title">Projects</h1>
+        <p class="page-lede">Long-form projects and series, each gathering paintings, notes, and context into a single body of work.</p>
+      </div>
+      <div class="page-hero-count">
+        <div class="count-number">{{ projects | length }}</div>
+        <div class="count-label">Project{% if projects|length != 1 %}s{% endif %}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-projects-index">
+  <div class="container projects-list">
+    {% for proj in projects %}
+      <article class="project-card">
+        <a href="projects/{{ proj.slug }}.html" class="project-card-link">
+          <div class="project-card-media">
+            {% if proj.featured_image %}
+              <img src="{{ proj.featured_image }}" alt="{{ proj.title }} — cover image" loading="lazy" decoding="async">
+            {% endif %}
+          </div>
+          <div class="project-card-body">
+            <div class="section-eyebrow">{{ proj.year }}</div>
+            <h2 class="project-card-title">{{ proj.title }}</h2>
+            {% if proj.subtitle %}
+              <p class="project-card-sub">{{ proj.subtitle }}</p>
+            {% endif %}
+            <p class="project-card-summary">{{ proj.summary }}</p>
+            <div class="project-card-foot">
+              <span>Read project →</span>
+              {% if proj.artworks_objects %}
+                <span class="project-card-count">{{ proj.artworks_objects | length }} work{% if proj.artworks_objects|length != 1 %}s{% endif %}</span>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

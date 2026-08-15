@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% set depth = 1 %}
+{% set outer = '../' %}
+
+<nav class="breadcrumbs container" aria-label="Breadcrumb">
+  <a href="{{ outer }}index.html">Home</a>
+  <span aria-hidden="true">/</span>
+  <a href="{{ outer }}work.html">Work</a>
+  <span aria-hidden="true">/</span>
+  <span aria-current="page">{{ artwork.title }}</span>
+</nav>
+
+<article class="artwork-page">
+  <div class="container">
+    <header class="artwork-head">
+      <div class="artwork-head-top">
+        <div class="section-eyebrow">
+          {% if artwork.series %}{{ artwork.series }}{% endif %}
+          {% if artwork.project %} · {{ artwork.project }}{% endif %}
+        </div>
+        <h1 class="artwork-title">{{ artwork.title }}</h1>
+      </div>
+      <div class="artwork-meta-grid">
+        <div class="meta-pair"><span class="meta-k">Year</span><span class="meta-v">{{ artwork.year }}</span></div>
+        <div class="meta-pair"><span class="meta-k">Medium</span><span class="meta-v">{{ artwork.medium }}</span></div>
+        <div class="meta-pair"><span class="meta-k">Dimensions</span><span class="meta-v">{{ artwork.dimensions }}{% if artwork.dimensions_cm %} · {{ artwork.dimensions_cm }}{% endif %}</span></div>
+        {% if artwork.series %}
+          <div class="meta-pair"><span class="meta-k">Series</span><span class="meta-v">{{ artwork.series }}</span></div>
+        {% endif %}
+      </div>
+    </header>
+
+    <figure class="artwork-figure">
+      <img src="{{ outer }}{{ artwork.image }}"
+           alt="{{ artwork.title }} — {{ artwork.year }}. {{ artwork.description }}"
+           loading="eager"
+           decoding="async"
+           class="artwork-primary-img">
+      <figcaption class="visually-hidden">{{ artwork.title }}, {{ artwork.year }}. {{ artwork.medium }}, {{ artwork.dimensions }}.</figcaption>
+    </figure>
+
+    <div class="artwork-copy">
+      {% if artwork.description %}
+        <section class="artwork-section">
+          <h2 class="artwork-copy-h">Description</h2>
+          <p>{{ artwork.description | nl2br | safe }}</p>
+        </section>
+      {% endif %}
+
+      {% if artwork.artist_note %}
+        <section class="artwork-section">
+          <h2 class="artwork-copy-h">Artist Note</h2>
+          <blockquote class="artist-note">{{ artwork.artist_note | nl2br | safe }}</blockquote>
+        </section>
+      {% endif %}
+
+      {% if artwork.project_object %}
+        <section class="artwork-section artwork-project">
+          <div class="section-eyebrow">From the project</div>
+          <a href="{{ outer }}projects/{{ artwork.project_object.slug }}.html" class="artwork-project-link">
+            {{ artwork.project_object.title }} →
+          </a>
+        </section>
+      {% endif %}
+    </div>
+
+    <nav class="artwork-nav" aria-label="Artwork">
+      {% if prev_artwork %}
+        <a class="artwork-nav-item artwork-nav-prev" href="{{ outer }}work/{{ prev_artwork.slug }}.html">
+          <span class="artwork-nav-dir">← Previous</span>
+          <span class="artwork-nav-title">{{ prev_artwork.title }}</span>
+          <span class="artwork-nav-year">{{ prev_artwork.year }}</span>
+        </a>
+      {% endif %}
+      <a class="artwork-nav-item artwork-nav-all" href="{{ outer }}work.html">
+        All works
+      </a>
+      {% if next_artwork %}
+        <a class="artwork-nav-item artwork-nav-next" href="{{ outer }}work/{{ next_artwork.slug }}.html">
+          <span class="artwork-nav-dir">Next →</span>
+          <span class="artwork-nav-title">{{ next_artwork.title }}</span>
+          <span class="artwork-nav-year">{{ next_artwork.year }}</span>
+        </a>
+      {% endif %}
+    </nav>
+
+    {% if related_works %}
+      <section class="related-works">
+        <div class="section-head">
+          <div class="section-eyebrow">Related</div>
+          <h2 class="section-title">Works from the same series</h2>
+        </div>
+        <div class="works-grid">
+          {% for r in related_works %}
+            <a class="work-card" href="{{ outer }}work/{{ r.slug }}.html">
+              <div class="work-media">
+                <img src="{{ outer }}{{ r.image }}" alt="{{ r.title }} — {{ r.year }}" loading="lazy" decoding="async">
+              </div>
+              <div class="work-meta">
+                <span class="work-title">{{ r.title }}</span>
+                <span class="work-year">{{ r.year }}</span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </div>
+</article>
+
+{% endblock %}

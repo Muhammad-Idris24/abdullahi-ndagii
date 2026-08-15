@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% set outer = '../' %}
+
+<nav class="breadcrumbs container" aria-label="Breadcrumb">
+  <a href="{{ outer }}index.html">Home</a>
+  <span aria-hidden="true">/</span>
+  <a href="{{ outer }}projects.html">Projects</a>
+  <span aria-hidden="true">/</span>
+  <span aria-current="page">{{ project.title }}</span>
+</nav>
+
+<article class="project-page">
+  <header class="project-hero">
+    <div class="container project-hero-inner">
+      <div class="section-eyebrow">Project · {{ project.year }}</div>
+      <h1 class="project-title">{{ project.title }}</h1>
+      {% if project.subtitle %}
+        <p class="project-subtitle">{{ project.subtitle }}</p>
+      {% endif %}
+      <p class="project-summary">{{ project.summary }}</p>
+      <div class="project-downloads">
+        <a class="btn-ghost" href="{{ outer }}pdfs/project-{{ project.slug }}.pdf">Download project PDF ↓</a>
+      </div>
+    </div>
+    {% if project.featured_image %}
+      <figure class="project-hero-image">
+        <img src="{{ outer }}{{ project.featured_image }}" alt="{{ project.title }} — cover image" loading="eager" decoding="async">
+      </figure>
+    {% endif %}
+  </header>
+
+  <div class="container project-body">
+    <div class="project-columns">
+      <aside class="project-side">
+        <ul class="project-toc" aria-label="Sections in this project">
+          {% if project.project_statement %}<li><a href="#statement">Statement</a></li>{% endif %}
+          {% if project.cultural_context %}<li><a href="#context">Cultural Context</a></li>{% endif %}
+          {% if project.artist_statement %}<li><a href="#artist">Artist on this work</a></li>{% endif %}
+          {% if project.artworks_objects %}<li><a href="#works">Works</a></li>{% endif %}
+        </ul>
+      </aside>
+
+      <div class="project-copy">
+        {% if project.project_statement %}
+          <section id="statement" class="project-section">
+            <h2 class="project-h">Project Statement</h2>
+            <div class="prose">{{ project.project_statement | nl2br | safe }}</div>
+          </section>
+        {% endif %}
+
+        {% if project.cultural_context %}
+          <section id="context" class="project-section">
+            <h2 class="project-h">Cultural &amp; Contextual Background</h2>
+            <div class="prose">{{ project.cultural_context | nl2br | safe }}</div>
+          </section>
+        {% endif %}
+
+        {% if project.artist_statement %}
+          <section id="artist" class="project-section">
+            <h2 class="project-h">Artist Statement</h2>
+            <blockquote class="artist-blockquote">{{ project.artist_statement | nl2br | safe }}</blockquote>
+          </section>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if project.project_images %}
+      <section class="project-section project-image-band">
+        {% for img in project.project_images %}
+          <figure>
+            <img src="{{ outer }}{{ (img.src if img.src is defined else img) }}" alt="{{ img.caption if img.caption is defined else project.title }}" loading="lazy" decoding="async">
+            {% if img.caption is defined %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+          </figure>
+        {% endfor %}
+      </section>
+    {% endif %}
+
+    {% if project.artworks_objects %}
+      <section id="works" class="project-section project-works">
+        <div class="section-head">
+          <div class="section-eyebrow">Works in this project</div>
+          <h2 class="section-title">{{ project.title }} — Works</h2>
+        </div>
+        <div class="works-grid works-grid--project">
+          {% for art in project.artworks_objects %}
+            <a class="work-card" href="{{ outer }}work/{{ art.slug }}.html">
+              <div class="work-media">
+                <img src="{{ outer }}{{ art.image }}" alt="{{ art.title }} — {{ art.year }}" loading="lazy" decoding="async">
+              </div>
+              <div class="work-meta">
+                <span class="work-title">{{ art.title }}</span>
+                <span class="work-year">{{ art.year }}</span>
+                <span class="work-medium">{{ art.medium }}</span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </div>
+</article>
+
+{% endblock %}

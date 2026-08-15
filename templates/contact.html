@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-hero page-hero--contact">
+  <div class="container page-hero-grid">
+    <div>
+      <div class="section-eyebrow">Contact</div>
+      <h1 class="page-title">Get in touch</h1>
+      <p class="page-lede">For commissions, exhibitions, press, studio visits, or simply to say hello.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-contact">
+  <div class="container contact-grid">
+    <div class="contact-primary">
+      <h2 class="contact-h">Direct</h2>
+      <ul class="contact-list">
+        {% if artist.contact.email %}
+          <li>
+            <span class="contact-k">Email</span>
+            <a class="contact-v" href="mailto:{{ artist.contact.email }}">{{ artist.contact.email }}</a>
+          </li>
+        {% endif %}
+        {% if artist.contact.phone %}
+          <li>
+            <span class="contact-k">Phone / WhatsApp</span>
+            <a class="contact-v" href="tel:{{ artist.contact.phone | replace(' ', '') }}">{{ artist.contact.phone }}</a>
+          </li>
+        {% endif %}
+        {% if artist.location %}
+          <li>
+            <span class="contact-k">Studio</span>
+            <span class="contact-v">{{ artist.location }}</span>
+          </li>
+        {% endif %}
+      </ul>
+
+      {% if artist.social_links %}
+        <h2 class="contact-h contact-h--2">Social</h2>
+        <ul class="contact-list">
+          {% for s in artist.social_links %}
+            <li>
+              <span class="contact-k">{{ s.label }}</span>
+              <a class="contact-v" href="{{ s.url }}" rel="noopener noreferrer" target="_blank">
+                {{ s.handle or s.label }} ↗
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <aside class="contact-downloads">
+      <h2 class="contact-h">Downloads</h2>
+      <a class="download-card download-card--stack" href="pdfs/abdullahi-ndagi-adamu-portfolio.pdf">
+        <div class="download-kicker">Portfolio</div>
+        <div class="download-title">Artist Portfolio PDF</div>
+        <div class="download-cta">Download ↓</div>
+      </a>
+      <a class="download-card download-card--stack" href="pdfs/abdullahi-ndagi-adamu-cv.pdf">
+        <div class="download-kicker">CV</div>
+        <div class="download-title">Artist CV PDF</div>
+        <div class="download-cta">Download ↓</div>
+      </a>
+    </aside>
+  </div>
+</section>
+
+{% endblock %}

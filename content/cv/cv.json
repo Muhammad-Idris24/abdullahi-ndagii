@@ -1,0 +1,48 @@
+{
+  "education": [
+    {
+      "id": "fut-minna-geology",
+      "institution": "Federal University of Technology, Minna",
+      "location": "Minna, Nigeria",
+      "url": "",
+      "degrees": [
+        "Bachelor of Technology (B.Tech.) in Geology"
+      ],
+      "honors": [],
+      "graduation_date": "",
+      "start_year": "",
+      "end_year": ""
+    }
+  ],
+  "residencies": [],
+  "awards": [],
+  "grants": [],
+  "workshops": [
+    {
+      "id": "infinite-realms-acerca",
+      "title": "Infinite Realms – Creative Workshops",
+      "organizer": "ACERCA Programme for Capacity Building to Development in the Cultural Sector, in collaboration with CAVIC",
+      "location": "Abuja, Nigeria",
+      "start_date": "2026-06-24",
+      "end_date": "2026-06-27",
+      "certification": "Diploma awarded upon completion",
+      "description": ""
+    }
+  ],
+  "talks": [],
+  "publications": [
+    {
+      "id": "climate-anthology",
+      "title": "Confronting Climate (Im)Mobilities: A Creative Anthology on Climate Mobility",
+      "publisher": "",
+      "year": 2026,
+      "role": "Selected Artist / Artwork Inclusion",
+      "description": ""
+    }
+  ],
+  "collections": [],
+  "selected_projects": [
+    "witness-series",
+    "what-we-carry"
+  ]
+}

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ artist.full_name }} — Artist Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A3; margin: 22mm 20mm 22mm 20mm; }
+  @page :first { margin-top: 30mm; }
+  * { box-sizing: border-box; }
+  html { font-size: 10.5pt; }
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1a1917;
+    background: #fff;
+    line-height: 1.5;
+    color: #1a1917;
+  }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; letter-spacing: 0.01em; }
+  h1 { font-size: 38pt; margin: 0 0 4pt; }
+  h2 { font-size: 22pt; margin: 0 0 12pt; page-break-after: avoid; border-bottom: 0.4pt solid #d9d3cb; padding-bottom: 6pt; }
+  h3 { font-size: 14pt; margin: 0; }
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .kicker { font-size: 9pt; letter-spacing: 0.18em; text-transform: uppercase; color: #8a8580; }
+  .eyebrow { font-size: 8.5pt; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8580; margin: 0 0 6pt; }
+  .meta-row { display: flex; justify-content: space-between; gap: 12pt; font-size: 9.5pt; color: #4a4643; }
+  .muted { color: #8a8580; }
+
+  /* Cover */
+  .cover {
+    min-height: 230mm;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 20mm 0 0;
+    page-break-after: always;
+  }
+  .cover-mark {
+    width: 60mm; height: 60mm; margin-bottom: 24mm;
+    border: 0.4pt solid #1a1917;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24pt;
+  }
+  .cover-name { font-size: 52pt; line-height: 1.02; font-weight: 400; margin: 0; }
+  .cover-title { font-family: 'Cormorant Garamond', serif; font-size: 20pt; color: #4a4643; margin-top: 6pt 0 0; }
+  .cover-foot { display: flex; justify-content: space-between; font-size: 9pt; color: #8a8580; border-top: 0.4pt solid #d9d3cb; padding-top: 8pt; }
+
+  /* Section */
+  .section { page-break-before: always; padding-top: 4mm; }
+  .section-no-break { page-break-before: auto; }
+  .prose { font-size: 10.5pt; line-height: 1.7; max-width: 160mm; }
+  .prose p { margin: 0 0 10pt; }
+  .quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14pt; line-height: 1.5;
+    margin: 10pt 0 14pt; padding: 0 0 0 14pt;
+    border-left: 0.8pt solid #1a1917;
+    font-style: italic;
+  }
+
+  /* Artwork pages */
+  .artwork { page-break-before: always; padding-top: 0; }
+  .artwork-image {
+    width: 100%;
+    max-height: 200mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 12mm;
+    page-break-inside: avoid;
+  }
+  .artwork-image img { max-width: 100%; max-height: 200mm; object-fit: contain; }
+  .artwork-caption { font-size: 10pt; border-top: 0.4pt solid #d9d3cb; padding-top: 6pt; }
+  .artwork-caption .title { font-family: 'Cormorant Garamond', serif; font-size: 18pt; margin: 0 0 2pt; }
+  .artwork-caption .m { font-size: 9.5pt; color: #4a4643; }
+  .artwork-caption .desc { margin-top: 6pt; font-size: 10pt; color: #2a2826; line-height: 1.6; }
+
+  /* CV block */
+  .cv-block { margin: 0 0 14mm; }
+  .cv-list { list-style: none; padding: 0; margin: 0; }
+  .cv-list li {
+    padding: 6pt 0;
+    border-top: 0.3pt solid #e7e1d9;
+    page-break-inside: avoid;
+  }
+  .cv-list li:first-child { border-top: none; }
+  .cv-item { display: flex; gap: 10mm; }
+  .cv-item .yr { flex: 0 0 26mm; color: #8a8580; font-size: 9.5pt; }
+  .cv-item .bd { flex: 1; }
+  .cv-item .t { font-family: 'Cormorant Garamond', serif; font-size: 13pt; }
+  .cv-item .o { font-size: 9.5pt; color: #4a4643; }
+
+  /* Contact block */
+  .contact-block { font-size: 10pt; line-height: 1.7; }
+  .contact-block a { color: #1a1917; text-decoration: none; }
+
+  .rule { border-top: 0.4pt solid #d9d3cb; margin: 10mm 0; }
+  .page-foot {
+    position: fixed; bottom: 10mm; left: 0; right: 0;
+    font-size: 8pt; color: #8a8580;
+    display: flex; justify-content: space-between;
+    border-top: 0.3pt solid #e7e1d9; padding-top: 3mm;
+  }
+</style>
+</head>
+<body>
+
+  <!-- COVER -->
+  <section class="cover">
+    <div>
+      <div class="cover-mark">{{ artist.full_name.split(' ')|map('first')|join }}</div>
+      <div class="kicker">{{ artist.professional_title | upper }} · {{ artist.location | upper }}</div>
+      <h1 class="cover-name" style="font-family: 'Cormorant Garamond', serif;">{{ artist.full_name }}</h1>
+      <p class="cover-title">Selected Works · Projects · CV · Artist Portfolio</p>
+    </div>
+    <div class="cover-foot">
+      <span>© {{ current_year }} {{ artist.full_name }}</span>
+      <span>Printed edition of the portfolio — {{ current_year }}</span>
+    </div>
+  </section>
+
+  <!-- BIO + STATEMENT -->
+  <section class="section">
+    <div class="eyebrow">Biography</div>
+    <h2>{{ artist.full_name }}</h2>
+    <div class="prose">{{ artist.biography | nl2br | safe }}</div>
+
+    <div class="rule"></div>
+
+    <div class="eyebrow">Artist Statement</div>
+    <h2>Statement</h2>
+    <div class="quote">{{ artist.artist_statement | nl2br | safe }}</div>
+
+    <div class="rule"></div>
+
+    <div class="eyebrow">Contact</div>
+    <h2>Contact &amp; Links</h2>
+    <div class="contact-block">
+      {% if artist.contact.email %}<div>Email · <a href="mailto:{{ artist.contact.email }}">{{ artist.contact.email }}</a></div>{% endif %}
+      {% if artist.contact.phone %}<div>Phone · {{ artist.contact.phone }}</div>{% endif %}
+      {% if artist.location %}<div>Studio · {{ artist.location }}</div>{% endif %}
+      {% for s in artist.social_links %}
+        {% if s.url %}<div>{{ s.label }} · {{ s.handle or s.url }}</div>{% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- SELECTED WORKS -->
+  {% for art in artworks[:12] %}
+    <section class="artwork">
+      <div class="artwork-image">
+        <img src="{{ (ROOT.as_uri() + '/' + art.image) if art.image.startswith('images/') else art.image }}" alt="{{ art.title }}">
+      </div>
+      <div class="artwork-caption">
+        <div class="title">{{ art.title }}</div>
+        <div class="m">{{ art.year }} · {{ art.medium }} · {{ art.dimensions }}{% if art.series %} · {{ art.series }}{% endif %}</div>
+        {% if art.description %}<div class="desc">{{ art.description }}</div>{% endif %}
+      </div>
+    </section>
+  {% endfor %}
+
+  <!-- PROJECTS -->
+  {% if projects %}
+    <section class="section">
+      <div class="eyebrow">Projects / Bodies of Work</div>
+      <h2>Projects</h2>
+      {% for proj in projects %}
+        <div style="page-break-inside: avoid; margin: 0 0 14mm;">
+          <div class="eyebrow">{{ proj.year }}</div>
+          <h3 style="font-size: 18pt;">{{ proj.title }}</h3>
+          {% if proj.subtitle %}<p class="muted" style="margin: 0 0 6pt; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13pt;">{{ proj.subtitle }}</p>{% endif %}
+          <div class="prose" style="max-width: none;">{{ proj.summary }}</div>
+          {% if proj.project_statement %}<div class="quote" style="margin-top: 8pt;">{{ proj.project_statement | truncate(500, True, '…') | nl2br | safe }}</div>{% endif %}
+          {% if proj.artworks_objects %}<div class="muted" style="margin-top: 6pt; font-size: 9.5pt;">Included works: {{ proj.artworks_objects | map(attribute='title') | join(', ') }}</div>{% endif %}
+        </div>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  <!-- CV -->
+  <section class="section">
+    <div class="eyebrow">Curriculum Vitae</div>
+    <h2>CV — Selected</h2>
+
+    {% if exhibitions %}
+    <div class="cv-block">
+      <h3>Selected Exhibitions</h3>
+      <ul class="cv-list">
+        {% for e in exhibitions %}
+          <li><div class="cv-item"><span class="yr">{{ e.year }}</span><div class="bd"><div class="t">{{ e.title }}</div><div class="o">{{ e.city }}, {{ e.country }} · {{ e.role }}{% if e.presenting_organization %} · {{ e.presenting_organization }}{% endif %}</div></div></div></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if cv.education %}
+    <div class="cv-block">
+      <h3>Education</h3>
+      <ul class="cv-list">
+        {% for edu in cv.education %}
+          <li><div class="cv-item"><span class="yr">{{ edu.end_year or edu.graduation_date or '' }}</span><div class="bd"><div class="t">{{ edu.degrees | join(', ') }}</div><div class="o">{{ edu.institution }}{% if edu.location %} · {{ edu.location }}{% endif %}</div></div></div></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if cv.workshops %}
+    <div class="cv-block">
+      <h3>Workshops &amp; Professional Development</h3>
+      <ul class="cv-list">
+        {% for w in cv.workshops %}
+          <li><div class="cv-item"><span class="yr">{{ w.end_date or '' }}</span><div class="bd"><div class="t">{{ w.title }}</div><div class="o">{{ w.organizer }}{% if w.location %} · {{ w.location }}{% endif %}{% if w.certification %} · {{ w.certification }}{% endif %}</div></div></div></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if cv.publications %}
+    <div class="cv-block">
+      <h3>Publications &amp; Anthologies</h3>
+      <ul class="cv-list">
+        {% for p in cv.publications %}
+          <li><div class="cv-item"><span class="yr">{{ p.year }}</span><div class="bd"><div class="t">{{ p.title }}</div><div class="o">{{ p.role }}{% if p.publisher %} · {{ p.publisher }}{% endif %}</div></div></div></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </section>
+
+  <div class="page-foot">
+    <span>{{ artist.full_name }} — Portfolio</span>
+    <span>© {{ current_year }}</span>
+  </div>
+
+</body>
+</html>

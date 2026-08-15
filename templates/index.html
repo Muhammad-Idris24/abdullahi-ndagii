@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% set intro = true %}
+{% block content %}
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-wordmark">
+      <div class="hero-kicker">{{ artist.professional_title | upper }} · {{ artist.location | upper }}</div>
+      <h1 class="hero-name">
+        <span class="hero-line">{{ artist.full_name.split(' ')[0] }}</span>
+        <span class="hero-line hero-line-italic">{{ artist.full_name.split(' ')[1] }}</span>
+        <span class="hero-line">{{ artist.full_name.split(' ')[2] if artist.full_name.split(' ')|length > 2 else '' }}</span>
+      </h1>
+    </div>
+    <figure class="hero-artwork" aria-label="Hero artwork">
+      {% if hero_artwork and hero_artwork.image %}
+        <a href="work/{{ hero_artwork.slug }}.html">
+          <img src="{{ hero_artwork.image }}" alt="{{ hero_artwork.title }} — {{ hero_artwork.year }}. {{ hero_artwork.description }}" loading="eager" decoding="async">
+        </a>
+        <figcaption>
+          <span class="art-title">{{ hero_artwork.title }}</span>
+          <span class="art-meta">{{ hero_artwork.year }} · {{ hero_artwork.medium }}</span>
+        </figcaption>
+      {% else %}
+        <div class="hero-placeholder">
+          <svg viewBox="0 0 400 300" aria-hidden="true">
+            <rect width="400" height="300" fill="#f4efe8"/>
+            <circle cx="200" cy="150" r="90" fill="none" stroke="#1a1917" stroke-width="0.5"/>
+            <circle cx="200" cy="150" r="60" fill="none" stroke="#1a1917" stroke-width="0.3"/>
+          </svg>
+        </div>
+      {% endif %}
+    </figure>
+  </div>
+</section>
+
+<section class="statement-band">
+  <div class="container statement-inner">
+    <blockquote class="statement-quote" aria-label="Conceptual statement">
+      {{ (artist.artist_statement | nl2br if artist else '') | safe }}
+    </blockquote>
+  </div>
+</section>
+
+<section class="section section-selected">
+  <div class="container">
+    <header class="section-head">
+      <div class="section-eyebrow">Selected Works</div>
+      <h2 class="section-title"><a class="unstyled" href="work.html">Recent Works</a></h2>
+      <a class="section-link" href="work.html">All works →</a>
+    </header>
+
+    <div class="works-grid">
+      {% for art in selected_works %}
+        <a class="work-card" href="work/{{ art.slug }}.html">
+          <div class="work-media">
+            <img src="{{ art.image }}" alt="{{ art.title }} — {{ art.year }}" loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <span class="work-title">{{ art.title }}</span>
+            <span class="work-year">{{ art.year }}</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if featured_project %}
+<section class="section section-project-feature">
+  <div class="container project-feature-grid">
+    <div class="project-feature-copy">
+      <div class="section-eyebrow">Featured Project · {{ featured_project.year }}</div>
+      <h2 class="section-title project-feature-title">{{ featured_project.title }}</h2>
+      {% if featured_project.subtitle %}
+        <p class="project-feature-subtitle">{{ featured_project.subtitle }}</p>
+      {% endif %}
+      <p class="project-feature-summary">{{ featured_project.summary }}</p>
+      <a class="btn-ghost" href="projects/{{ featured_project.slug }}.html">Read the project →</a>
+    </div>
+    <figure class="project-feature-media">
+      {% if featured_project.featured_image %}
+        <a href="projects/{{ featured_project.slug }}.html">
+          <img src="{{ featured_project.featured_image }}" alt="{{ featured_project.title }} — cover image" loading="lazy" decoding="async">
+        </a>
+      {% endif %}
+      {% if featured_project.artworks_objects %}
+        <figcaption>
+          {{ featured_project.artworks_objects | length }} work{% if featured_project.artworks_objects|length != 1 %}s{% endif %} in this body of work.
+        </figcaption>
+      {% endif %}
+    </figure>
+  </div>
+</section>
+{% endif %}
+
+<section class="section section-intro-about">
+  <div class="container intro-about-grid">
+    <div class="intro-about-portrait">
+      {% if artist.portrait %}
+        <figure>
+          <img src="{{ artist.portrait }}" alt="Portrait of {{ artist.full_name }}" loading="lazy" decoding="async">
+        </figure>
+      {% endif %}
+    </div>
+    <div class="intro-about-text">
+      <div class="section-eyebrow">About the Artist</div>
+      <h2 class="section-title">On presence, memory, and belonging.</h2>
+      <p>{{ artist.biography | truncate(700, True, '…') }}</p>
+      <div class="intro-about-actions">
+        <a class="btn-ghost" href="about.html">Read biography + statement →</a>
+        <a class="btn-link" href="cv.html">View CV</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if selected_exhibitions %}
+<section class="section section-exhibitions">
+  <div class="container">
+    <header class="section-head">
+      <div class="section-eyebrow">Selected Exhibitions</div>
+      <h2 class="section-title"><a class="unstyled" href="exhibitions.html">Exhibitions &amp; Presentations</a></h2>
+      <a class="section-link" href="exhibitions.html">Full history →</a>
+    </header>
+    <ul class="exhibition-list compact">
+      {% for exh in selected_exhibitions %}
+        <li class="exhibition-item">
+          <span class="exhibition-year">{{ exh.year }}</span>
+          <div class="exhibition-body">
+            <div class="exhibition-title">{{ exh.title }}</div>
+            <div class="exhibition-meta">
+              {% if exh.presenting_organization %}{{ exh.presenting_organization }} · {% endif %}
+              {{ exh.city }}, {{ exh.country }} · {{ exh.role }}
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

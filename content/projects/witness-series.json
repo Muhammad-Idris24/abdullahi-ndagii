@@ -1,0 +1,15 @@
+{
+  "slug": "witness-series",
+  "title": "Witness Series",
+  "subtitle": "Observation, memory, place, and the traces left by what we encounter.",
+  "year": "2024 — Present",
+  "summary": "A body of work exploring observation, memory, place, experience, and the traces left by what we encounter.",
+  "project_statement": "",
+  "cultural_context": "",
+  "artist_statement": "",
+  "artworks": ["genesis-in-chaos", "timeless", "hands-of-creation", "instinct", "umbra"],
+  "project_images": [],
+  "featured_image": "images/artworks/timeless.jpeg",
+  "order": 1,
+  "published": true
+}

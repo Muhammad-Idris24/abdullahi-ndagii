@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ artist.full_name }} — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 20mm 22mm 18mm 22mm; }
+  * { box-sizing: border-box; }
+  html { font-size: 10pt; }
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1a1917;
+    background: #fff;
+    line-height: 1.45;
+  }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+  h1 { font-size: 30pt; margin: 0 0 2pt; letter-spacing: 0.01em; }
+  h2 {
+    font-size: 13pt;
+    margin: 16pt 0 6pt;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: #4a4643;
+    border-top: 0.5pt solid #1a1917;
+    padding-top: 6pt;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 12pt; margin: 0; color: #1a1917; }
+  .kicker { font-size: 8.5pt; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8580; margin-bottom: 2mm; }
+  .muted { color: #6e6964; }
+
+  /* Header */
+  .cv-head { border-bottom: 0.6pt solid #1a1917; padding-bottom: 10pt; margin-bottom: 6pt; }
+  .cv-head .title { font-family: 'Cormorant Garamond', serif; font-size: 30pt; }
+  .cv-head .sub { font-family: 'Cormorant Garamond', serif; font-size: 13pt; color: #4a4643; margin-top: 2pt; }
+  .cv-contact {
+    display: flex; flex-wrap: wrap; gap: 6mm;
+    font-size: 9pt; margin-top: 6pt; color: #4a4643;
+  }
+  .cv-contact span::before { content: "·"; margin-right: 6mm; color: #d9d3cb; }
+  .cv-contact span:first-child::before { content: ""; margin: 0; }
+
+  /* Statement */
+  .statement {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11.5pt;
+    line-height: 1.55;
+    color: #2a2826;
+    margin: 8pt 0 0;
+    padding: 0 0 0 10pt;
+    border-left: 0.6pt solid #1a1917;
+  }
+
+  /* Lists */
+  .cv-section { page-break-inside: avoid; }
+  .items { list-style: none; padding: 0; margin: 0; }
+  .items li { padding: 5pt 0 6pt; border-top: 0.3pt solid #e7e1d9; }
+  .items li:first-child { border-top: none; }
+  .row { display: flex; justify-content: space-between; gap: 6mm; }
+  .row .title { font-family: 'Cormorant Garamond', serif; font-size: 12.5pt; }
+  .row .yr { color: #8a8580; font-size: 9.5pt; flex: 0 0 auto; }
+  .org { font-size: 9.5pt; color: #4a4643; margin-top: 1pt; }
+  .note { font-size: 9pt; color: #4a4643; margin-top: 2pt; }
+
+  .enquiry {
+    display: flex; flex-wrap: wrap; gap: 4mm 6mm;
+    margin: 4pt 0 0;
+  }
+  .enquiry span {
+    font-size: 9pt; color: #4a4643;
+    padding: 2pt 0;
+  }
+
+  .page-foot {
+    position: fixed; bottom: 8mm; left: 0; right: 0;
+    font-size: 8pt; color: #8a8580;
+    display: flex; justify-content: space-between;
+    border-top: 0.3pt solid #e7e1d9; padding-top: 2mm;
+  }
+</style>
+</head>
+<body>
+
+  <header class="cv-head">
+    <div class="kicker">Curriculum Vitae</div>
+    <div class="cv-title">
+      <h1 style="margin:0;">{{ artist.full_name }}</h1>
+    </div>
+    <div class="sub">{{ artist.professional_title }} · {{ artist.location }}</div>
+    <div class="cv-contact">
+      {% if artist.contact.email %}<span>{{ artist.contact.email }}</span>{% endif %}
+      {% if artist.contact.phone %}<span>{{ artist.contact.phone }}</span>{% endif %}
+      {% for s in artist.social_links %}{% if s.handle %}<span>{{ s.label }}: {{ s.handle }}</span>{% endif %}{% endfor %}
+    </div>
+  </header>
+
+  <div class="statement" style="border:0;padding:0;">
+    <h2>Practice</h2>
+    <p class="statement" style="border-left:0.6pt solid #1a1917;">{{ artist.practice if artist.practice else artist.artist_statement | truncate(480, True, '…') }}</p>
+
+    {% if artist.areas_of_enquiry %}
+      <h2>Areas of Enquiry</h2>
+      <div class="enquiry">
+        {% for a in artist.areas_of_enquiry %}
+          <span>{{ a }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if exhibitions %}
+  <h2>Selected Exhibitions</h2>
+  <ul class="items">
+    {% for e in exhibitions %}
+      <li>
+      <div class="row"><span class="title">{{ e.title }}</span><span class="yr">{{ e.year }}</span></div>
+      <div class="org">{{ e.city }}, {{ e.country }} · {{ e.role }}{% if e.presenting_organization %} · {{ e.presenting_organization }}{% endif %}{% if e.type %} · {{ e.type }}{% endif %}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if projects %}
+  <h2>Selected Projects / Bodies of Work</h2>
+  <ul class="items">
+    {% for p in projects %}
+      <li>
+      <div class="row"><span class="title">{{ p.title }}</span><span class="yr">{{ p.year }}</span></div>
+      <div class="org">{{ p.subtitle or p.summary }}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if cv.education %}
+  <h2>Education</h2>
+  <ul class="items">
+    {% for edu in cv.education %}
+      <li>
+      <div class="row"><span class="title">{{ edu.degrees | join(', ') }}</span><span class="yr">{{ edu.graduation_date or edu.end_year or '' }}</span></div>
+      <div class="org">{{ edu.institution }}{% if edu.location %} · {{ edu.location }}{% endif %}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if cv.residencies %}
+  <h2>Residencies</h2>
+  <ul class="items">
+    {% for r in cv.residencies %}
+      <li>
+      <div class="row"><span class="title">{{ r.title or r.name }}</span><span class="yr">{{ r.year or r.end_date or '' }}</span></div>
+      <div class="org">{{ r.organization or r.institution }}{% if r.location %} · {{ r.location }}{% endif %}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if cv.awards %}
+  <h2>Awards &amp; Honors</h2>
+  <ul class="items">
+    {% for a in cv.awards %}
+      <li>
+      <div class="row"><span class="title">{{ a.title }}</span><span class="yr">{{ a.year }}</span></div>
+      <div class="org">{{ a.organization or a.institution }}{% if a.location %} · {{ a.location }}{% endif %}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if cv.grants %}
+  <h2>Grants</h2>
+  <ul class="items">
+    {% for g in cv.grants %}
+      <li>
+      <div class="row"><span class="title">{{ g.title }}</span><span class="yr">{{ g.year }}</span></div>
+      <div class="org">{{ g.organization or g.funder }}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if cv.workshops %}
+  <h2>Workshops &amp; Professional Development</h2>
+  <ul class="items">
+    {% for w in cv.workshops %}
+      <li>
+      <div class="row"><span class="title">{{ w.title }}</span><span class="yr">{{ w.end_date or '' }}</span></div>
+      <div class="org">{{ w.organizer }}{% if w.location %} · {{ w.location }}{% endif %}</div>
+      {% if w.certification %}<div class="note">{{ w.certification }}</div>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if cv.talks %}
+  <h2>Talks &amp; Presentations</h2>
+  <ul class="items">
+    {% for t in cv.talks %}
+      <li>
+      <div class="row"><span class="title">{{ t.title }}</span><span class="yr">{{ t.year or t.date or '' }}</span></div>
+      <div class="org">{{ t.venue or t.event }}{% if t.location %} · {{ t.location }}{% endif %}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if cv.publications %}
+  <h2>Publications &amp; Anthologies</h2>
+  <ul class="items">
+    {% for p in cv.publications %}
+      <li>
+      <div class="row"><span class="title">{{ p.title }}</span><span class="yr">{{ p.year }}</span></div>
+      <div class="org">{{ p.role }}{% if p.publisher %} · {{ p.publisher }}{% endif %}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if cv.collections %}
+  <h2>Selected Collections</h2>
+  <ul class="items">
+    {% for c in cv.collections %}
+      <li>
+      <div class="row"><span class="title">{{ c.name }}</span><span class="yr">{{ c.year or '' }}</span></div>
+      <div class="org">{{ c.location or '' }}</div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="page-foot">
+    <span>{{ artist.full_name }} — CV</span>
+    <span>© {{ current_year }} · Updated {{ current_year }}</span>
+  </div>
+
+</body>
+</html>

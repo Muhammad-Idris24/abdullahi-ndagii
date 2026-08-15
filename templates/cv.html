@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-hero page-hero--cv">
+  <div class="container page-hero-grid">
+    <div>
+      <div class="section-eyebrow">Curriculum Vitae</div>
+      <h1 class="page-title">CV</h1>
+      <p class="page-lede">Education, workshops, publications, and professional activity. A downloadable PDF version is available below.</p>
+    </div>
+    <a class="btn-ghost btn-inline" href="pdfs/abdullahi-ndagi-adamu-cv.pdf">Download CV PDF ↓</a>
+  </div>
+</section>
+
+<section class="section section-cv">
+  <div class="container cv-grid">
+
+    {% if cv.education %}
+      <section class="cv-block">
+        <h2 class="cv-h">Education</h2>
+        <ul class="cv-list">
+          {% for edu in cv.education %}
+            <li>
+              <div class="cv-item-top">
+                <span class="cv-title">{{ edu.degrees | join(', ') }}</span>
+                <span class="cv-year">{{ edu.graduation_date or (edu.end_year or '') }}</span>
+              </div>
+              <div class="cv-org">{{ edu.institution }}{% if edu.location %} · {{ edu.location }}{% endif %}</div>
+              {% if edu.honors %}
+                <ul class="cv-sub">{% for h in edu.honors %}<li>{{ h }}</li>{% endfor %}</ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if cv.residencies %}
+      <section class="cv-block">
+        <h2 class="cv-h">Residencies</h2>
+        <ul class="cv-list">
+          {% for r in cv.residencies %}
+            <li>
+              <div class="cv-item-top"><span class="cv-title">{{ r.title or r.name }}</span><span class="cv-year">{{ r.year or (r.end_date or '') }}</span></div>
+              <div class="cv-org">{{ r.organization or r.institution }}{% if r.location %} · {{ r.location }}{% endif %}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if cv.awards %}
+      <section class="cv-block">
+        <h2 class="cv-h">Awards &amp; Honors</h2>
+        <ul class="cv-list">
+          {% for a in cv.awards %}
+            <li>
+              <div class="cv-item-top"><span class="cv-title">{{ a.title }}</span><span class="cv-year">{{ a.year }}</span></div>
+              <div class="cv-org">{{ a.organization or a.institution }}{% if a.location %} · {{ a.location }}{% endif %}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if cv.grants %}
+      <section class="cv-block">
+        <h2 class="cv-h">Grants</h2>
+        <ul class="cv-list">
+          {% for g in cv.grants %}
+            <li>
+              <div class="cv-item-top"><span class="cv-title">{{ g.title }}</span><span class="cv-year">{{ g.year }}</span></div>
+              <div class="cv-org">{{ g.organization or g.funder }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if cv.workshops %}
+      <section class="cv-block">
+        <h2 class="cv-h">Workshops &amp; Professional Development</h2>
+        <ul class="cv-list">
+          {% for w in cv.workshops %}
+            <li>
+              <div class="cv-item-top"><span class="cv-title">{{ w.title }}</span><span class="cv-year">{{ w.end_date or w.year }}</span></div>
+              <div class="cv-org">{{ w.organizer }}{% if w.location %} · {{ w.location }}{% endif %}</div>
+              {% if w.certification %}<div class="cv-note">{{ w.certification }}</div>{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if cv.talks %}
+      <section class="cv-block">
+        <h2 class="cv-h">Talks &amp; Presentations</h2>
+        <ul class="cv-list">
+          {% for t in cv.talks %}
+            <li>
+              <div class="cv-item-top"><span class="cv-title">{{ t.title }}</span><span class="cv-year">{{ t.year or (t.date or '') }}</span></div>
+              <div class="cv-org">{{ t.venue or t.event }}{% if t.location %} · {{ t.location }}{% endif %}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if cv.publications %}
+      <section class="cv-block">
+        <h2 class="cv-h">Publications &amp; Anthologies</h2>
+        <ul class="cv-list">
+          {% for p in cv.publications %}
+            <li>
+              <div class="cv-item-top"><span class="cv-title">{{ p.title }}</span><span class="cv-year">{{ p.year }}</span></div>
+              <div class="cv-org">{{ p.publisher }}{% if p.role %} · {{ p.role }}{% endif %}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if cv.collections %}
+      <section class="cv-block">
+        <h2 class="cv-h">Selected Collections</h2>
+        <ul class="cv-list">
+          {% for c in cv.collections %}
+            <li>
+              <div class="cv-item-top"><span class="cv-title">{{ c.name }}</span><span class="cv-year">{{ c.year or '' }}</span></div>
+              <div class="cv-org">{{ c.location or '' }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if exhibitions %}
+      <section class="cv-block">
+        <h2 class="cv-h">Selected Exhibitions</h2>
+        <ul class="cv-list">
+          {% for exh in exhibitions %}
+            <li>
+              <div class="cv-item-top"><span class="cv-title">{{ exh.title }}</span><span class="cv-year">{{ exh.year }}</span></div>
+              <div class="cv-org">{{ exh.city }}, {{ exh.country }} · {{ exh.role }}{% if exh.presenting_organization %} · {{ exh.presenting_organization }}{% endif %}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if cv.selected_projects %}
+      <section class="cv-block">
+        <h2 class="cv-h">Selected Projects</h2>
+        <ul class="cv-list">
+          {% for slug in cv.selected_projects %}
+            {% set proj = project_by_slug and project_by_slug.get(slug) %}
+            <li>
+              <div class="cv-item-top">
+                <span class="cv-title">
+                  {% if proj %}
+                    <a href="projects/{{ proj.slug }}.html">{{ proj.title }}</a>
+                  {% else %}
+                    {{ slug }}
+                  {% endif %}
+                </span>
+                <span class="cv-year">{{ proj.year if proj else '' }}</span>
+              </div>
+              <div class="cv-org">{{ proj.subtitle if proj else '' }}</div>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

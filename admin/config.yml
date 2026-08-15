@@ -1,0 +1,354 @@
+# Decap CMS configuration for Abdullahi Ndagi Adamu — Artist Portfolio
+#
+# AUTHENTICATION:
+# This config uses the `github` backend, which requires an OAuth2 token exchange.
+# Because GitHub does not allow client-side OAuth flows for public repos, you must
+# deploy a small OAuth proxy (a Cloudflare Worker is recommended — zero-cost).
+#
+# SETUP (one time):
+#   1. GitHub → Settings → Developer settings → OAuth Apps → New OAuth App
+#      - Homepage URL:     your site URL (e.g. https://yourname.github.io)
+#      - Authorization callback URL: https://<your-worker>.<account>.workers.dev/callback
+#      Generate a Client Secret, keep both Client ID and Client Secret for step 2.
+#
+#   2. Deploy the "Netlify CMS GitHub OAuth Provider" Cloudflare Worker:
+#      Fork: https://github.com/roberttod/GitHub-OAuth-Gateway-Cloudflare-Worker
+#      Set secrets via `wrangler secret put`:
+#         - GH_CLIENT_ID=<from step 1>
+#         - GH_CLIENT_SECRET=<from step 1>
+#         - ALLOWED_DOMAINS=<your-repo-owner>.github.io,localhost  (comma separated)
+#
+#   3. Replace `base_url` below with the deployed worker URL (no trailing slash).
+#
+#   4. For local development, run: `npx decap-server` (Node) and leave local_backend: true.
+#      That will skip OAuth entirely when editing on http://localhost:8081/admin/.
+
+backend:
+  name: github
+  repo: muhammad-Idris24/abdullahi-ndagii      # TODO: replace with actual repo (owner/repo)
+  branch: main
+  base_url: ""                                      # TODO: your Cloudflare OAuth worker URL (e.g. https://oauth-gateway.you.workers.dev)
+  auth_endpoint: "auth"
+  cms_label_prefix: "cms:"
+
+# Local development helper. Run: npx decap-server
+local_backend: true
+
+# Where to publish built files (for site previews — we use the root public/ build)
+publish_mode: simple
+media_folder: "images/uploads"                    # Uploads stored in repo
+public_folder: "/images/uploads"
+
+# Optional — a custom logo shown in the CMS sidebar
+# logo_url: /static/icons/cms-logo.svg
+
+site_url: /
+display_url: /
+locale: en
+
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# ----- Content collections -----
+collections:
+
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "site"
+        label: "Site / Navigation"
+        file: "content/settings/site.json"
+        fields:
+          - { label: "Site Title", name: "site_title", widget: "string" }
+          - { label: "Site Description", name: "site_description", widget: "text" }
+          - label: "Base URL"
+            name: "base_url"
+            widget: "string"
+            required: false
+            hint: "Canonical base URL for SEO, e.g. https://yourname.github.io/abdullahi-ndagii (no trailing slash)."
+          - label: "Default share image"
+            name: "default_share_image"
+            widget: "image"
+            required: false
+          - label: "Primary Navigation"
+            name: "navigation"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Path", name: "path", widget: "string" }
+          - label: "Footer Downloads"
+            name: "footer_downloads"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Path", name: "path", widget: "string" }
+
+  - name: "artist"
+    label: "Artist Profile"
+    files:
+      - name: "profile"
+        label: "Artist Profile"
+        file: "content/artist/profile.json"
+        fields:
+          - { label: "Full Name", name: "full_name", widget: "string" }
+          - { label: "Professional Title", name: "professional_title", widget: "string" }
+          - { label: "Location", name: "location", widget: "string" }
+          - label: "Portrait"
+            name: "portrait"
+            widget: "image"
+            required: false
+          - { label: "Biography", name: "biography", widget: "text" }
+          - { label: "Artist Statement", name: "artist_statement", widget: "text" }
+          - label: "Practice / Mediums"
+            name: "practice"
+            widget: "string"
+            required: false
+          - label: "Areas of Enquiry"
+            name: "areas_of_enquiry"
+            widget: "list"
+            required: false
+            field: { label: "Area", name: "area", widget: "string" }
+          - label: "Contact"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Email", name: "email", widget: "string", required: false }
+              - { label: "Phone", name: "phone", widget: "string", required: false }
+              - { label: "Location text", name: "location", widget: "string", required: false }
+          - label: "Social Links"
+            name: "social_links"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+              - { label: "Handle", name: "handle", widget: "string", required: false }
+              - { label: "Icon (SVG path)", name: "icon", widget: "string", required: false }
+
+  - name: "artworks"
+    label: "Artworks"
+    label_singular: "Artwork"
+    folder: "content/artworks"
+    extension: "json"
+    format: "json"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "slug"
+    sortable_fields: ["order", "year", "title"]
+    view_filters:
+      - label: "Published"
+        field: published
+        pattern: true
+      - label: "Featured"
+        field: featured
+        pattern: true
+    fields:
+      - { label: "Slug (URL)", name: "slug", widget: "string", hint: "Unique, lowercase, e.g. genesis-in-chaos" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Year", name: "year", widget: "number", value_type: "int", min: 1900, max: 2100 }
+      - { label: "Medium", name: "medium", widget: "string", required: false }
+      - { label: "Dimensions (imperial)", name: "dimensions", widget: "string", required: false, hint: "e.g. 24 x 36 inches" }
+      - { label: "Dimensions (cm)", name: "dimensions_cm", widget: "string", required: false }
+      - { label: "Series", name: "series", widget: "string", required: false }
+      - { label: "Project (slug)", name: "project", widget: "string", required: false }
+      - label: "Artwork Image"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Primary, high-quality image."
+      - label: "Thumbnail"
+        name: "thumbnail"
+        widget: "image"
+        required: false
+        hint: "Optional; falls back to the primary image."
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Artist Note", name: "artist_note", widget: "text", required: false }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Order (lower = first)", name: "order", widget: "number", value_type: "int", default: 99 }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+        field: { label: "Tag", name: "tag", widget: "string" }
+
+  - name: "projects"
+    label: "Projects / Series"
+    label_singular: "Project"
+    folder: "content/projects"
+    extension: "json"
+    format: "json"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "slug"
+    sortable_fields: ["order", "year", "title"]
+    fields:
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Subtitle", name: "subtitle", widget: "string", required: false }
+      - { label: "Year / Range", name: "year", widget: "string", hint: "e.g. 2024 — Present" }
+      - { label: "Summary", name: "summary", widget: "text" }
+      - { label: "Project Statement", name: "project_statement", widget: "text", required: false }
+      - { label: "Cultural / Contextual Background", name: "cultural_context", widget: "text", required: false }
+      - { label: "Artist Statement on this Project", name: "artist_statement", widget: "text", required: false }
+      - label: "Included Artworks (slugs, in order)"
+        name: "artworks"
+        widget: "list"
+        required: false
+        field: { label: "Artwork Slug", name: "slug_ref", widget: "string" }
+      - label: "Project Images (documentation / process)"
+        name: "project_images"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Image", name: "src", widget: "image" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - label: "Featured / Cover Image"
+        name: "featured_image"
+        widget: "image"
+        required: false
+      - { label: "Order", name: "order", widget: "number", value_type: "int", default: 99 }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
+
+  - name: "exhibitions"
+    label: "Exhibitions"
+    label_singular: "Exhibition"
+    folder: "content/exhibitions"
+    extension: "json"
+    format: "json"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "slug"
+    sortable_fields: ["order", "year", "title"]
+    fields:
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Presenting Organization", name: "presenting_organization", widget: "string", required: false }
+      - { label: "Type", name: "type", widget: "string", required: false, hint: "e.g. Solo, Group, Anthology, Public Art" }
+      - { label: "Start Date", name: "start_date", widget: "datetime", format: "YYYY-MM-DD", required: false }
+      - { label: "End Date", name: "end_date", widget: "datetime", format: "YYYY-MM-DD", required: false }
+      - { label: "Year", name: "year", widget: "number", value_type: "int", min: 1900, max: 2100 }
+      - { label: "City", name: "city", widget: "string" }
+      - { label: "Country", name: "country", widget: "string" }
+      - { label: "Role", name: "role", widget: "string", hint: "Participating Artist, Selected Artist, etc." }
+      - label: "Artworks Presented (slugs)"
+        name: "artworks_presented"
+        widget: "list"
+        required: false
+        field: { label: "Slug", name: "slug_ref", widget: "string" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Order (lower = earlier / more prominent)", name: "order", widget: "number", value_type: "int", default: 99 }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
+
+  - name: "cv"
+    label: "CV Data"
+    files:
+      - name: "cv"
+        label: "Curriculum Vitae"
+        file: "content/cv/cv.json"
+        fields:
+          - label: "Education"
+            name: "education"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "ID (slug)", name: "id", widget: "string", required: false }
+              - { label: "Institution", name: "institution", widget: "string" }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "URL", name: "url", widget: "string", required: false }
+              - label: "Degrees"
+                name: "degrees"
+                widget: "list"
+                field: { label: "Degree", name: "degree", widget: "string" }
+              - label: "Honors"
+                name: "honors"
+                widget: "list"
+                required: false
+                field: { label: "Honor", name: "honor", widget: "string" }
+              - { label: "Graduation Date", name: "graduation_date", widget: "string", required: false }
+              - { label: "Start Year", name: "start_year", widget: "string", required: false }
+              - { label: "End Year", name: "end_year", widget: "string", required: false }
+          - label: "Residencies"
+            name: "residencies"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: false }
+              - { label: "Title / Program", name: "title", widget: "string" }
+              - { label: "Organization", name: "organization", widget: "string", required: false }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Year", name: "year", widget: "string", required: false }
+              - { label: "End Date", name: "end_date", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+          - label: "Awards & Honors"
+            name: "awards"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Organization", name: "organization", widget: "string", required: false }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Year", name: "year", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+          - label: "Grants"
+            name: "grants"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Funder / Organization", name: "organization", widget: "string", required: false }
+              - { label: "Year", name: "year", widget: "string", required: false }
+              - { label: "Amount", name: "amount", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+          - label: "Workshops & Professional Development"
+            name: "workshops"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: false }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Organizer", name: "organizer", widget: "string", required: false }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Start Date", name: "start_date", widget: "string", required: false }
+              - { label: "End Date", name: "end_date", widget: "string", required: false }
+              - { label: "Certification / Diploma", name: "certification", widget: "string", required: false }
+              - { label: "Notes", name: "description", widget: "text", required: false }
+          - label: "Talks & Presentations"
+            name: "talks"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Venue / Event", name: "venue", widget: "string", required: false }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Date", name: "date", widget: "string", required: false }
+              - { label: "Year", name: "year", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+          - label: "Publications & Anthologies"
+            name: "publications"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: false }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Publisher", name: "publisher", widget: "string", required: false }
+              - { label: "Year", name: "year", widget: "string", required: false }
+              - { label: "Role (e.g. Selected Artist)", name: "role", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+          - label: "Collections"
+            name: "collections"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Year", name: "year", widget: "string", required: false }
+              - { label: "Notes", name: "description", widget: "text", required: false }
+          - label: "Selected Projects (slugs)"
+            name: "selected_projects"
+            widget: "list"
+            required: false
+            field: { label: "Project Slug", name: "slug_ref", widget: "string" }

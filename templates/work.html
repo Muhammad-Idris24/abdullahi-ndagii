@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-hero page-hero--work">
+  <div class="container">
+    <div class="page-hero-grid">
+      <div>
+        <div class="section-eyebrow">All Works</div>
+        <h1 class="page-title">Work</h1>
+        <p class="page-lede">{{ artist.full_name }}'s paintings and mixed-media works explore memory, presence, cultural identity, and Kupa heritage through acrylic, spray paint, and expressive mark-making.</p>
+      </div>
+      <div class="page-hero-count">
+        <div class="count-number">{{ artworks | length }}</div>
+        <div class="count-label">Works{% if projects %} · {{ projects | length }} project{% if projects|length != 1 %}s{% endif %}{% endif %}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-work-index">
+  <div class="container">
+
+    {% if projects %}
+      <div class="index-block">
+        <div class="index-head">
+          <h2 class="index-title">Projects</h2>
+          <div class="index-rule"></div>
+        </div>
+        <ul class="project-index-list">
+          {% for proj in projects %}
+            <li class="project-index-item">
+              <a href="projects/{{ proj.slug }}.html" class="project-index-link">
+                <div class="project-index-thumb">
+                  {% if proj.featured_image %}
+                    <img src="{{ proj.featured_image }}" alt="" loading="lazy" decoding="async">
+                  {% endif %}
+                </div>
+                <div class="project-index-info">
+                  <div class="project-index-year">{{ proj.year }}</div>
+                  <div class="project-index-title">{{ proj.title }}</div>
+                  {% if proj.subtitle %}<div class="project-index-sub">{{ proj.subtitle }}</div>{% endif %}
+                  <div class="project-index-cta">Read project →</div>
+                </div>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <div class="index-block">
+      <div class="index-head">
+        <h2 class="index-title">Individual Works</h2>
+        <div class="index-rule"></div>
+      </div>
+
+      <div class="works-grid works-grid--index">
+        {% for art in artworks %}
+          <a class="work-card" href="work/{{ art.slug }}.html">
+            <div class="work-media">
+              <img src="{{ art.image }}" alt="{{ art.title }} — {{ art.year }}. {{ art.description }}" loading="lazy" decoding="async">
+            </div>
+            <div class="work-meta">
+              <span class="work-title">{{ art.title }}</span>
+              <span class="work-year">{{ art.year }}</span>
+              {% if art.medium %}<span class="work-medium">{{ art.medium }}</span>{% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
