@@ -25,9 +25,9 @@
 
 backend:
   name: github
-  repo: muhammad-Idris24/abdullahi-ndagii      # TODO: replace with actual repo (owner/repo)
+  repo: Muhammad-Idris24/abdullahi-ndagii
   branch: main
-  base_url: ""                                      # TODO: your Cloudflare OAuth worker URL (e.g. https://oauth-gateway.you.workers.dev)
+  base_url: "https://abdullahi-ndagii.mamiidris24.workers.dev"
   auth_endpoint: "auth"
   cms_label_prefix: "cms:"
 
@@ -67,7 +67,7 @@ collections:
             name: "base_url"
             widget: "string"
             required: false
-            hint: "Canonical base URL for SEO, e.g. https://yourname.github.io/abdullahi-ndagii (no trailing slash)."
+            hint: "Canonical base URL for SEO, e.g. https://Muhammad-Idris24.github.io/abdullahi-ndagii (no trailing slash)."
           - label: "Default share image"
             name: "default_share_image"
             widget: "image"
