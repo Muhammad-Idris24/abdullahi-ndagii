@@ -39,7 +39,7 @@ def _nl2br(value: str) -> str:
     if not value:
         return ""
     escaped = markupsafe.escape(value)
-    return markupsafe.Markup(escaped.replace("\n", "<br>\n"))
+    return markupsafe.Markup("<br>\n").join(escaped.splitlines())
 
 
 def _date_display(value: str) -> str:

@@ -75,6 +75,9 @@ jobs:
         run: |
           test -d public
           test -f public/index.html
+          test -s public/pdfs/abdullahi-ndagi-adamu-cv.pdf
+          test -s public/pdfs/abdullahi-ndagi-adamu-portfolio.pdf
+          test -s public/pdfs/project-witness-series.pdf
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/main'
