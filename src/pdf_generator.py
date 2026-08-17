@@ -107,8 +107,56 @@ def _render(template_name: str, context: dict[str, Any]) -> str:
     return template.render(**context)
 
 
+def _fallback_pdf(html_text: str, output_path: Path) -> None:
+    """Create a usable PDF when WeasyPrint's native libraries are unavailable."""
+    from html.parser import HTMLParser
+    from reportlab.lib.colors import HexColor
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+    from reportlab.lib.units import mm
+    from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
+    from xml.sax.saxutils import escape
+
+    class TextExtractor(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__()
+            self.parts: list[str] = []
+            self.ignored_depth = 0
+        def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+            if tag in {"head", "style", "script"}:
+                self.ignored_depth += 1
+                return
+            if self.ignored_depth:
+                return
+            if tag in {"h1", "h2", "h3", "p", "li", "div", "br"}:
+                self.parts.append("\n")
+        def handle_endtag(self, tag: str) -> None:
+            if tag in {"head", "style", "script"} and self.ignored_depth:
+                self.ignored_depth -= 1
+        def handle_data(self, data: str) -> None:
+            if self.ignored_depth:
+                return
+            text = data.strip()
+            if text:
+                self.parts.append(text.replace("—", "-").replace("–", "-").replace("•", "-").replace("·", "-").replace("©", "Copyright") + " ")
+
+    parser = TextExtractor()
+    parser.feed(html_text)
+    lines = [" ".join(line.split()) for line in "".join(parser.parts).splitlines()]
+    lines = [line for line in lines if line]
+    styles = getSampleStyleSheet()
+    title = ParagraphStyle("Title", parent=styles["Heading1"], fontName="Helvetica", fontSize=22, leading=27, textColor=HexColor("#1a1917"), spaceAfter=12)
+    body = ParagraphStyle("Body", parent=styles["BodyText"], fontName="Helvetica", fontSize=9.5, leading=14, textColor=HexColor("#1a1917"), spaceAfter=5)
+    story = [Paragraph(escape(lines[0] if lines else "Artist document"), title)]
+    story.extend(Paragraph(escape(line), body) for line in lines[1:])
+    SimpleDocTemplate(str(output_path), pagesize=A4, leftMargin=22 * mm, rightMargin=22 * mm, topMargin=20 * mm, bottomMargin=18 * mm).build(story)
+    print(f"  [OK] {output_path.relative_to(ROOT)} (ReportLab fallback)")
+
+
 def _to_pdf(html_text: str, output_path: Path, css_path: Path | None = None) -> None:
     if HTML is None:
+        _fallback_pdf(html_text, output_path)
+        return
         print(f"  weasyprint not installed — writing HTML instead: {output_path.with_suffix('.html')}")
         output_path.with_suffix(".html").write_text(html_text, encoding="utf-8")
         return

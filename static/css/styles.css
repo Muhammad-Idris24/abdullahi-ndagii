@@ -348,6 +348,7 @@ address { font-style: normal; }
 }
 .hero-artwork .art-title { font-family: var(--font-serif); font-size: 17px; color: var(--charcoal); }
 .hero-artwork .art-meta { color: var(--ash); letter-spacing: 0.02em; }
+.hero-portrait img { object-position: center 18%; }
 
 .hero-placeholder svg { width: 100%; height: auto; display: block; }
 
@@ -1101,11 +1102,10 @@ h1, h2, h3, .page-title, .artwork-title { scroll-margin-top: 96px; }
 }
 .project-image-band figure {
   aspect-ratio: 4 / 3;
-  overflow: hidden;
   background: var(--bone-2);
 }
 .project-image-band figure:nth-child(3n+1) { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
-.project-image-band img { width: 100%; height: 100%; object-fit: cover; }
+.project-image-band img { width: 100%; height: 100%; object-fit: contain; background: var(--bone-2); }
 .project-image-band figcaption { margin-top: 10px; font-size: 13px; color: var(--ash); }
 
 /* ---------- About page ---------- */

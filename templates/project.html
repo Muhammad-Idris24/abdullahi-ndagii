@@ -21,7 +21,7 @@
       {% endif %}
       <p class="project-summary">{{ project.summary }}</p>
       <div class="project-downloads">
-        <a class="btn-ghost" href="{{ outer }}pdfs/project-{{ project.slug }}.pdf">Download project PDF ↓</a>
+        <a class="btn-ghost" href="{{ outer }}pdfs/project-{{ project.slug }}.pdf" download>Download project PDF ↓</a>
       </div>
     </div>
     {% if project.featured_image %}

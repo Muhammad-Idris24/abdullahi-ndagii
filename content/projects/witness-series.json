@@ -8,8 +8,13 @@
   "cultural_context": "",
   "artist_statement": "",
   "artworks": ["genesis-in-chaos", "timeless", "hands-of-creation", "instinct", "umbra"],
-  "project_images": [],
-  "featured_image": "images/artworks/timeless.jpeg",
+  "project_images": [
+    {"src": "images/artworks/witness-series1.jpeg", "caption": "Witness Series I"},
+    {"src": "images/artworks/witness-series2.jpeg", "caption": "Witness Series II"},
+    {"src": "images/artworks/witness-series3.jpeg", "caption": "Witness Series III"},
+    {"src": "images/artworks/witness-series4.jpeg", "caption": "Witness Series IV"}
+  ],
+  "featured_image": "images/artworks/witness-series.jpeg",
   "order": 1,
   "published": true
 }

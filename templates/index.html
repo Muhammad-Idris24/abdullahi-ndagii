@@ -12,14 +12,14 @@
         <span class="hero-line">{{ artist.full_name.split(' ')[2] if artist.full_name.split(' ')|length > 2 else '' }}</span>
       </h1>
     </div>
-    <figure class="hero-artwork" aria-label="Hero artwork">
-      {% if hero_artwork and hero_artwork.image %}
-        <a href="work/{{ hero_artwork.slug }}.html">
-          <img src="{{ hero_artwork.image }}" alt="{{ hero_artwork.title }} — {{ hero_artwork.year }}. {{ hero_artwork.description }}" loading="eager" decoding="async">
+    <figure class="hero-artwork hero-portrait" aria-label="Portrait of {{ artist.full_name }}">
+      {% if artist.portrait %}
+        <a href="about.html">
+          <img src="{{ artist.portrait }}" alt="Portrait of {{ artist.full_name }}" loading="eager" decoding="async">
         </a>
         <figcaption>
-          <span class="art-title">{{ hero_artwork.title }}</span>
-          <span class="art-meta">{{ hero_artwork.year }} · {{ hero_artwork.medium }}</span>
+          <span class="art-title">{{ artist.full_name }}</span>
+          <span class="art-meta">{{ artist.professional_title }}</span>
         </figcaption>
       {% else %}
         <div class="hero-placeholder">

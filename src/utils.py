@@ -46,11 +46,14 @@ def load_all_json(directory: Path) -> list[dict[str, Any]]:
 
 
 def ensure_public_dir() -> None:
-    """Ensure the public output directory exists and is clean of stale HTML."""
+    """Ensure the public output directory exists and is clean of stale generated pages."""
     PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
     for suffix in ("*.html", "*.xml", "*.txt"):
         for path in PUBLIC_DIR.glob(suffix):
             path.unlink()
+    for generated_dir in (PUBLIC_DIR / "work", PUBLIC_DIR / "projects", PUBLIC_DIR / "pdfs"):
+        if generated_dir.exists():
+            shutil.rmtree(generated_dir)
 
 
 def copy_static_assets() -> None:
@@ -74,6 +77,10 @@ def copy_static_assets() -> None:
 def ensure_pdfs_dir() -> Path:
     pdfs = PUBLIC_DIR / "pdfs"
     pdfs.mkdir(parents=True, exist_ok=True)
+    # Remove obsolete HTML fallbacks from earlier builds so downloads always
+    # correspond to the PDF links published by the site.
+    for stale_html in pdfs.glob("*.html"):
+        stale_html.unlink()
     return pdfs
 
 

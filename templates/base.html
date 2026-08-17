@@ -102,7 +102,7 @@
       <nav aria-label="Footer">
         <ul class="footer-nav">
           {% for item in site.navigation %}
-            <li><a href="{% if page_path.count('/') > 1 %}../{% endif %}{{ item.path }}">{{ item.label }}</a></li>
+            <li><a href="{{ asset_prefix }}{{ item.path }}">{{ item.label }}</a></li>
           {% endfor %}
         </ul>
       </nav>
@@ -122,7 +122,7 @@
         <div class="footer-label">Downloads</div>
         <ul>
           {% for dl in site.footer_downloads %}
-            <li><a href="{{ asset_prefix }}{{ dl.path }}">{{ dl.label }} ↓</a></li>
+            <li><a href="{{ asset_prefix }}{{ dl.path }}" download>{{ dl.label }} ↓</a></li>
           {% endfor %}
         </ul>
       </div>
