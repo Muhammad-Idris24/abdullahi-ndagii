@@ -157,15 +157,18 @@ def _to_pdf(html_text: str, output_path: Path, css_path: Path | None = None) -> 
     if HTML is None:
         _fallback_pdf(html_text, output_path)
         return
-        print(f"  weasyprint not installed — writing HTML instead: {output_path.with_suffix('.html')}")
-        output_path.with_suffix(".html").write_text(html_text, encoding="utf-8")
-        return
-    html = HTML(string=html_text, base_url=str(ROOT))
-    stylesheets = []
-    if css_path and css_path.exists():
-        stylesheets.append(CSS(filename=str(css_path)))
-    html.write_pdf(str(output_path), stylesheets=stylesheets or None)
-    print(f"  [OK] {output_path.relative_to(ROOT)}")
+    try:
+        html = HTML(string=html_text, base_url=str(ROOT))
+        stylesheets = []
+        if css_path and css_path.exists():
+            stylesheets.append(CSS(filename=str(css_path)))
+        html.write_pdf(str(output_path), stylesheets=stylesheets or None)
+        print(f"  [OK] {output_path.relative_to(ROOT)}")
+    except Exception as exc:
+        # Keep the published download available even if the host's native
+        # WeasyPrint libraries fail while processing an asset.
+        print(f"  [WARN] WeasyPrint failed for {output_path.name}: {exc}. Using ReportLab fallback.")
+        _fallback_pdf(html_text, output_path)
 
 
 def generate_portfolio_pdf() -> None:
