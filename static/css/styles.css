@@ -714,7 +714,7 @@ h1, h2, h3, .page-title, .artwork-title { scroll-margin-top: 96px; }
   .section { padding: clamp(36px, 8vw, 56px) 0; }
 
   .artwork-title { font-size: clamp(20px, 7vw, 30px); }
-  .artwork-meta-grid { grid-template-columns: 1fr; gap: 12px 12px; }
+  .artwork-meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; }
   .artwork-primary-img { max-height: 60vh; object-fit: contain; }
   .hero-name { line-height: 1; }
 }
@@ -736,8 +736,8 @@ h1, h2, h3, .page-title, .artwork-title { scroll-margin-top: 96px; }
   .hero-name { max-width: 88ch; }
 }
 
-/* Ensure footer nav wraps gracefully */
-.footer-nav li { white-space: nowrap; }
+/* Keep footer navigation within narrow viewports. */
+.footer-nav li { white-space: normal; }
 
 /* End responsive fixes */
 
@@ -1446,9 +1446,12 @@ a.contact-v:hover { text-decoration: underline; text-decoration-thickness: 1px; 
   .section-head {
     grid-template-columns: 1fr;
     align-items: start;
+    gap: 10px;
   }
-  .section-head .section-title, .section-link { grid-column: 1; }
-  .section-link { justify-self: start; }
+  .section-head > * { grid-column: 1; grid-row: auto; }
+  .section-head .section-eyebrow { margin-bottom: 0; }
+  .section-head .section-title { justify-self: start; }
+  .section-head .section-link { justify-self: start; margin-top: 2px; }
 }
 
 @media (max-width: 768px) {
@@ -1484,10 +1487,17 @@ a.contact-v:hover { text-decoration: underline; text-decoration-thickness: 1px; 
   .statement-quote { max-width: none; font-size: clamp(20px, 5vw, 30px); }
   .intro-mark { width: 110px; }
   .contact-list li { grid-template-columns: 1fr; gap: 4px; }
+  .cv-item-top { align-items: flex-start; gap: 8px 16px; }
 }
 
 @media (max-width: 480px) {
   .brand-name { display: none; }
+  .section-head { gap: 8px; }
+  .section-head .section-title { font-size: clamp(28px, 8vw, 38px); }
+  .section-head .section-link { font-size: 11px; }
+  .artwork-meta-grid { grid-template-columns: 1fr; }
+  .cv-item-top { flex-wrap: wrap; }
+  .cv-year { margin-left: auto; }
 }
 
 /* ---------- Print (web-page print fallback; real PDFs use separate templates) ---------- */
