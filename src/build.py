@@ -162,9 +162,10 @@ def render_all_pages(ctx: dict[str, Any]) -> None:
     featured_project = next((p for p in ctx["projects"] if p["slug"] == "what-we-carry"), ctx["projects"][0] if ctx["projects"] else None)
     render_page(env, "index.html", "index.html", _page(
         "home",
-        f"{ctx['artist']['full_name']} — {ctx['artist']['professional_title']}",
+        "Abdullahi Ndagii | Nigerian Visual Artist",
         ctx["site"]["site_description"],
         "index.html",
+        page_image=hero.get("image") if hero else None,
         hero_artwork=hero,
         selected_works=ctx["featured_artworks"][:6] or ctx["artworks"][:6],
         featured_project=featured_project,
@@ -174,9 +175,10 @@ def render_all_pages(ctx: dict[str, Any]) -> None:
     # Work index
     render_page(env, "work.html", "work.html", _page(
         "work",
-        "Work — " + ctx["artist"]["full_name"],
-        f"Selected paintings and mixed-media works by {ctx['artist']['full_name']}.",
+        "Artworks by Abdullahi Ndagii | Nigerian Visual Artist",
+        f"Explore paintings by Abdullahi Ndagii (Abdullahi Ndagi Adamu), a Nigerian visual artist exploring memory, cultural identity, and Kupa heritage.",
         "work.html",
+        page_image=ctx["artworks"][0].get("image") if ctx["artworks"] else None,
         artworks=ctx["artworks"],
         projects=ctx["projects"],
     ))
@@ -186,12 +188,17 @@ def render_all_pages(ctx: dict[str, Any]) -> None:
         slug = art["slug"]
         prev_art = ctx["artworks"][i - 1] if i > 0 else ctx["artworks"][-1]
         next_art = ctx["artworks"][i + 1] if i + 1 < len(ctx["artworks"]) else ctx["artworks"][0]
-        related = [a for a in ctx["artworks"] if a["slug"] != slug and a.get("series") == art.get("series")][:3]
+        series = (art.get("series") or "").strip()
+        related = [
+            a for a in ctx["artworks"]
+            if series and a["slug"] != slug and (a.get("series") or "").strip() == series
+        ][:3]
         render_page(env, "artwork.html", f"work/{slug}.html", _page(
             f"work/{slug}",
-            f"{art['title']} — {ctx['artist']['full_name']}",
-            art.get("description") or f"{art['title']}, {art.get('year', '')} — {ctx['artist']['full_name']}",
+            f"{art['title']} | Abdullahi Ndagii Artwork",
+            (art.get("description") or f"{art['title']}, {art.get('year', '')}.") + " Artwork by Abdullahi Ndagii (Abdullahi Ndagi Adamu), Nigerian visual artist.",
             f"work/{slug}.html",
+            page_image=art.get("image"),
             artwork=art,
             prev_artwork=prev_art,
             next_artwork=next_art,
@@ -201,9 +208,10 @@ def render_all_pages(ctx: dict[str, Any]) -> None:
     # Projects index
     render_page(env, "projects.html", "projects.html", _page(
         "projects",
-        "Projects — " + ctx["artist"]["full_name"],
-        f"Bodies of work and long-form projects by {ctx['artist']['full_name']}.",
+        "Art Projects | Abdullahi Ndagii, Nigerian Visual Artist",
+        "Explore art series and projects by Abdullahi Ndagii (Abdullahi Ndagi Adamu), including works about memory, place, and the River Niger.",
         "projects.html",
+        page_image=ctx["projects"][0].get("featured_image") if ctx["projects"] else None,
         projects=ctx["projects"],
     ))
 
@@ -212,41 +220,42 @@ def render_all_pages(ctx: dict[str, Any]) -> None:
         slug = proj["slug"]
         render_page(env, "project.html", f"projects/{slug}.html", _page(
             f"projects/{slug}",
-            f"{proj['title']} — {ctx['artist']['full_name']}",
-            proj.get("summary") or f"{proj['title']}, a project by {ctx['artist']['full_name']}",
+            f"{proj['title']} | Art Series by Abdullahi Ndagii",
+            (proj.get("summary") or f"{proj['title']} art series.") + " By Abdullahi Ndagii, Nigerian visual artist.",
             f"projects/{slug}.html",
+            page_image=proj.get("featured_image"),
             project=proj,
         ))
 
     # About
     render_page(env, "about.html", "about.html", _page(
         "about",
-        "About — " + ctx["artist"]["full_name"],
-        f"Biography and artist statement of {ctx['artist']['full_name']}.",
+        "About Abdullahi Ndagii | Nigerian Visual Artist",
+        "Meet Abdullahi Ndagii (Abdullahi Ndagi Adamu), a Nigerian visual artist from Lokoja whose work explores Kupa heritage, memory, identity, and belonging.",
         "about.html",
     ))
 
     # Exhibitions
     render_page(env, "exhibitions.html", "exhibitions.html", _page(
         "exhibitions",
-        "Exhibitions — " + ctx["artist"]["full_name"],
-        f"Selected exhibitions, anthologies, and public presentations by {ctx['artist']['full_name']}.",
+        "Exhibitions | Abdullahi Ndagii, Nigerian Artist",
+        "Selected exhibitions, anthologies, and public presentations by Abdullahi Ndagii, Nigerian visual artist.",
         "exhibitions.html",
     ))
 
     # CV
     render_page(env, "cv.html", "cv.html", _page(
         "cv",
-        "CV — " + ctx["artist"]["full_name"],
-        f"Education, workshops, publications, and CV for {ctx['artist']['full_name']}.",
+        "Artist CV | Abdullahi Ndagii",
+        "Education, workshops, publications, exhibitions, and professional experience of Abdullahi Ndagii (Abdullahi Ndagi Adamu), Nigerian visual artist.",
         "cv.html",
     ))
 
     # Contact
     render_page(env, "contact.html", "contact.html", _page(
         "contact",
-        "Contact — " + ctx["artist"]["full_name"],
-        f"Contact {ctx['artist']['full_name']} for commissions, exhibitions, and press enquiries.",
+        "Contact Abdullahi Ndagii | Art Enquiries",
+        "Contact Abdullahi Ndagii (Abdullahi Ndagi Adamu) for artwork, commissions, exhibitions, collaborations, and press enquiries.",
         "contact.html",
     ))
 

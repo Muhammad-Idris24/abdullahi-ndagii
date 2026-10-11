@@ -6,23 +6,53 @@
   <title>{{ page_title }}</title>
   <meta name="description" content="{{ page_description }}">
   <meta name="author" content="{{ artist.full_name }}">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="keywords" content="Abdullahi Ndagii, Abdullahi Ndagi Adamu, Nigerian visual artist, Kupa artist, Nupe artist, contemporary Nigerian art, paintings">
 
   <meta property="og:title" content="{{ page_title }}">
-  <meta property="og:description" content="{{ page_description }}">
-  <meta property="og:type" content="website">
+  <meta property="og:description" content="{{ artist.biography | striptags | truncate(240, True, '…') }}">
+  <meta property="og:type" content="{{ 'article' if page_path.startswith('work/') else 'website' }}">
   {% if site.base_url %}
     <meta property="og:url" content="{{ site.base_url }}/{{ page_path }}">
     <link rel="canonical" href="{{ site.base_url }}/{{ page_path }}">
   {% endif %}
-  <meta property="og:image" content="{{ site.default_share_image }}">
+  {% set share_image = artist.portrait | default(site.default_share_image) %}
+  {% set share_image_url = share_image if share_image.startswith('https://') or share_image.startswith('http://') else site.base_url ~ '/' ~ share_image %}
+  <meta property="og:image" content="{{ share_image_url }}">
+  <meta property="og:image:alt" content="{{ page_title }}">
   <meta property="og:locale" content="en_NG">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ page_title }}">
-  <meta name="twitter:description" content="{{ page_description }}">
-  <meta name="twitter:image" content="{{ site.default_share_image }}">
+  <meta name="twitter:description" content="{{ artist.biography | striptags | truncate(240, True, '…') }}">
+  <meta name="twitter:image" content="{{ share_image_url }}">
 
   <meta name="theme-color" content="#1a1917">
   <meta name="color-scheme" content="light">
+  <script type="application/ld+json">
+  {{ {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "name": "Abdullahi Ndagii",
+        "alternateName": [artist.full_name, "Abdullahi Ndagi"],
+        "jobTitle": artist.professional_title,
+        "description": artist.biography | striptags | truncate(500, True, "…"),
+        "image": site.base_url ~ "/" ~ artist.portrait,
+        "url": site.base_url ~ "/about.html",
+        "address": {"@type": "PostalAddress", "addressLocality": "Lokoja", "addressRegion": "Kogi State", "addressCountry": "NG"},
+        "sameAs": artist.social_links | map(attribute="url") | list
+      },
+      {
+        "@type": "WebSite",
+        "name": "Abdullahi Ndagii | Nigerian Visual Artist",
+        "alternateName": "Abdullahi Ndagi Adamu",
+        "url": site.base_url,
+        "description": site.site_description
+      }
+    ]
+  } | tojson }}
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
