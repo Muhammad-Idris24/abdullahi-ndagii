@@ -5,7 +5,7 @@
   "medium": "Acrylic on Canvas",
   "dimensions": "24 x 48 inches",
   "dimensions_cm": "61 x 122 cm",
-  "series": "Witness Series",
+  "series": "",
   "project": "",
   "image": "images/artworks/hands-of-creation.jpeg",
   "thumbnail": "images/artworks/hands-of-creation.jpeg",
@@ -14,5 +14,13 @@
   "featured": true,
   "order": 3,
   "published": true,
-  "tags": ["creation", "generosity", "hands", "energy", "flow"]
+  "tags": [
+    "creation",
+    "generosity",
+    "hands",
+    "energy",
+    "flow"
+  ],
+  "price_usd": 200,
+  "availability": "available"
 }

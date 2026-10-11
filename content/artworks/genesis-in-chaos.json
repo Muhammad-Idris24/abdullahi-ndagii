@@ -5,7 +5,7 @@
   "medium": "Acrylic on Canvas",
   "dimensions": "24 x 36 inches",
   "dimensions_cm": "61 x 91 cm",
-  "series": "Witness Series",
+  "series": "",
   "project": "",
   "image": "images/artworks/genesis-in-chaos.jpeg",
   "thumbnail": "images/artworks/genesis-in-chaos.jpeg",
@@ -14,5 +14,13 @@
   "featured": true,
   "order": 1,
   "published": true,
-  "tags": ["abstraction", "chaos", "origins", "peace", "expressive"]
+  "tags": [
+    "abstraction",
+    "chaos",
+    "origins",
+    "peace",
+    "expressive"
+  ],
+  "price_usd": 400,
+  "availability": "available"
 }

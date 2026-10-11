@@ -1,11 +1,11 @@
 {
   "slug": "umbra",
-  "title": "Umbra",
+  "title": "Umber",
   "year": 2025,
   "medium": "Acrylic on Canvas",
   "dimensions": "24 x 36 inches",
   "dimensions_cm": "61 x 91 cm",
-  "series": "Witness Series",
+  "series": "",
   "project": "",
   "image": "images/artworks/umbra.jpeg",
   "thumbnail": "images/artworks/umbra.jpeg",
@@ -14,5 +14,13 @@
   "featured": true,
   "order": 5,
   "published": true,
-  "tags": ["shadow", "umbra", "darkness", "self", "introspection"]
+  "tags": [
+    "shadow",
+    "umbra",
+    "darkness",
+    "self",
+    "introspection"
+  ],
+  "price_usd": 200,
+  "availability": "available"
 }

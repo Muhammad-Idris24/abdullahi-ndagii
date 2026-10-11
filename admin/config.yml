@@ -154,6 +154,12 @@ collections:
       - { label: "Dimensions (cm)", name: "dimensions_cm", widget: "string", required: false }
       - { label: "Series", name: "series", widget: "string", required: false }
       - { label: "Project (slug)", name: "project", widget: "string", required: false }
+      - label: "Availability"
+        name: "availability"
+        widget: "select"
+        options: ["available", "sold"]
+        required: false
+      - { label: "Price (USD)", name: "price_usd", widget: "number", value_type: "int", min: 0, required: false }
       - label: "Artwork Image"
         name: "image"
         widget: "image"

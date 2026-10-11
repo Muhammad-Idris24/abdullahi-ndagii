@@ -29,6 +29,12 @@
         {% if artwork.series %}
           <div class="meta-pair"><span class="meta-k">Series</span><span class="meta-v">{{ artwork.series }}</span></div>
         {% endif %}
+        {% if artwork.availability %}
+          <div class="meta-pair"><span class="meta-k">Availability</span><span class="meta-v">{{ artwork.availability | title }}</span></div>
+        {% endif %}
+        {% if artwork.price_usd is not none %}
+          <div class="meta-pair"><span class="meta-k">Price</span><span class="meta-v">${{ artwork.price_usd }} USD</span></div>
+        {% endif %}
       </div>
     </header>
 

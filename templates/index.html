@@ -59,6 +59,8 @@
           <div class="work-meta">
             <span class="work-title">{{ art.title }}</span>
             <span class="work-year">{{ art.year }}</span>
+            {% if art.availability %}<span class="work-status{% if art.availability == 'sold' %} is-sold{% endif %}">{{ art.availability | title }}</span>{% endif %}
+            {% if art.price_usd is not none %}<span class="work-price">${{ art.price_usd }} USD</span>{% endif %}
           </div>
         </a>
       {% endfor %}

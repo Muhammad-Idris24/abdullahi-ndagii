@@ -450,6 +450,16 @@ address { font-style: normal; }
   color: var(--ash);
   letter-spacing: 0.02em;
 }
+.work-status,
+.work-price {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+.work-status { grid-column: 1; }
+.work-status.is-sold { color: var(--ash); }
+.work-price { grid-column: 2; grid-row: 2; text-align: right; }
 
 .works-grid--index .work-card { grid-column: span 4; }
 .works-grid--index .work-card:nth-child(3n + 1),

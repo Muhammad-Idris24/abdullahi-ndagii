@@ -1,20 +1,20 @@
 {
   "slug": "witness-series",
-  "title": "Witness Series",
+  "title": "Witnessed Series",
   "subtitle": "Observation, memory, place, and the traces left by what we encounter.",
   "year": "2024 — Present",
   "summary": "A body of work exploring observation, memory, place, experience, and the traces left by what we encounter.",
   "project_statement": "",
   "cultural_context": "",
   "artist_statement": "",
-  "artworks": ["genesis-in-chaos", "timeless", "hands-of-creation", "instinct", "umbra"],
-  "project_images": [
-    {"src": "images/artworks/witness-series1.jpeg", "caption": "Witness Series I"},
-    {"src": "images/artworks/witness-series2.jpeg", "caption": "Witness Series II"},
-    {"src": "images/artworks/witness-series3.jpeg", "caption": "Witness Series III"},
-    {"src": "images/artworks/witness-series4.jpeg", "caption": "Witness Series IV"}
+  "artworks": [
+    "still-we-move",
+    "the-crossing",
+    "when-the-river-came",
+    "on-the-way"
   ],
-  "featured_image": "images/artworks/witness-series.jpeg",
+  "project_images": [],
+  "featured_image": "images/artworks/witnessed-series/witness-series-image.jpeg",
   "order": 1,
   "published": true
 }
