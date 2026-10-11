@@ -1444,14 +1444,15 @@ a.contact-v:hover { text-decoration: underline; text-decoration-thickness: 1px; 
   .artwork-nav-next { text-align: left; align-items: flex-start; }
   .artwork-nav-next:hover { padding-right: 0; padding-left: 6px; text-align: left; }
   .section-head {
-    grid-template-columns: 1fr;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
   }
-  .section-head > * { grid-column: 1; grid-row: auto; }
+  .section-head > * { grid-column: auto; grid-row: auto; }
   .section-head .section-eyebrow { margin-bottom: 0; }
-  .section-head .section-title { justify-self: start; }
-  .section-head .section-link { justify-self: start; margin-top: 2px; }
+  .section-head .section-title,
+  .section-head .section-link { align-self: flex-start; margin: 0; }
 }
 
 @media (max-width: 768px) {
