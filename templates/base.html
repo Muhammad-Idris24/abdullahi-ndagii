@@ -40,7 +40,7 @@
         "description": artist.biography | striptags | truncate(500, True, "…"),
         "image": site.base_url ~ "/" ~ artist.portrait,
         "url": site.base_url ~ "/about.html",
-        "address": {"@type": "PostalAddress", "addressLocality": "Lokoja", "addressRegion": "Kogi State", "addressCountry": "NG"},
+        "address": {"@type": "PostalAddress", "addressLocality": "Abuja", "addressRegion": "FCT", "addressCountry": "NG"},
         "sameAs": artist.social_links | map(attribute="url") | list
       },
       {
