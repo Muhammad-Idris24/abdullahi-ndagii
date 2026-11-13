@@ -37,7 +37,7 @@
 <section class="statement-band">
   <div class="container statement-inner">
     <blockquote class="statement-quote" aria-label="Conceptual statement">
-      {{ (artist.artist_statement | nl2br if artist else '') | safe }}
+      {{ (artist.biography | nl2br if artist else '') | safe }}
     </blockquote>
   </div>
 </section>
